@@ -1,0 +1,139 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="vrz.com.revisator.CreateAccountActivity"
+    android:background="#626465"
+    android:id="@+id/relativeCreate"
+    android:focusable="true"
+    android:focusableInTouchMode="true">>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            tools:context=".LoginActivity"
+            android:background="#626465"
+            android:id="@+id/relativeLayout2">
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:id="@+id/crUserNameET"
+        android:layout_marginTop="30dp"
+        android:hint="Nom d&apos;utilisateur"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff" />
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/crPass1ET"
+        android:layout_below="@+id/crUserNameET"
+        android:layout_alignStart="@+id/crUserNameET"
+        android:layout_alignEnd="@+id/crUserNameET"
+        android:background="#ffffff"
+        android:layout_marginTop="10dp"
+        android:hint="Mot de Passe" />
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/crPass2ET"
+        android:layout_below="@+id/crPass1ET"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:hint="Confirmer mot de passe" />
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/crNameET"
+        android:layout_below="@+id/crPass2ET"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:hint="Nom" />
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/crSurnameET"
+        android:layout_below="@+id/crNameET"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:hint="Prénom" />
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/crMailET"
+        android:layout_below="@+id/crSurnameET"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:hint="Adresse mail" />
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:id="@+id/crUnivET"
+        android:layout_below="@+id/crMailET"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:hint="Université" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText3"
+        android:layout_below="@+id/crUnivET"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:id="@+id/editText"
+        android:layout_alignTop="@+id/editText3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:hint="Promotion" />
+
+    <Button
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text="Créer le compte"
+        android:id="@+id/crSend"
+        android:background="#ff6b35"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/editText3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp" />
+</RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+

@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Revisator</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_create_account">Créer un compte</string>
+    <string name="title_activity_forgot_password">Mot de passe oublié</string>
+    <string name="title_activity_main_menu">Révisator - Acceuil</string>
+    <string name="welcome">Bienvenue </string>
+    <string name="one_player_button">Quizz Solo</string>
+    <string name="multiplayer_button">Quizz Multijoueur</string>
+    <string name="stat_button">Statistiques</string>
+    <string name="friendlist_button">Mes amis</string>
+    <string name="logout">Se déconnecter</string>
+    <string name="pref_userinfo">pref_userinfo</string>
+    <string name="no_imput_toast">Merci d\'entrer un nom d\'utilisatur et un mot de passe</string>
+</resources>

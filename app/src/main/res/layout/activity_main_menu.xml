@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="vrz.com.revisator.MainMenuActivity"
+    android:background="#626465">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/welcome"
+        android:id="@+id/textView"
+        android:textColor="#ffffff"
+        android:textSize="30dp"
+        android:layout_marginTop="44dp"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text="@string/one_player_button"
+        android:id="@+id/OnePlayerButton"
+        android:background="#ff6b35"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp" />
+
+    <Button
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text="@string/multiplayer_button"
+        android:id="@+id/MultiplayerButton"
+        android:background="#ff6b35"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/OnePlayerButton"
+        android:layout_alignStart="@+id/OnePlayerButton"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text="@string/stat_button"
+        android:id="@+id/StatButton"
+        android:background="#ff6b35"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/MultiplayerButton"
+        android:layout_alignStart="@+id/MultiplayerButton"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text="@string/friendlist_button"
+        android:id="@+id/FriendlistButton"
+        android:background="#ff6b35"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/StatButton"
+        android:layout_alignStart="@+id/StatButton"
+        android:layout_marginTop="20dp" />
+</RelativeLayout>
