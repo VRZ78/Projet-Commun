@@ -1,0 +1,120 @@
+<!--Toolbar-->
+<div class="card">
+    <div class="toolbar bgc-green-700 tc-white-1">
+
+        <!--Left Toolbar-->
+        <div class="toolbar__left mr+++">
+
+        </div>
+
+        <!--Toolbar title-->
+        <span class="toolbar__label fs-title">Revisator - Vue Professeur</span>
+
+        <!--Toolbar Buttons-->
+        <div class="toolbar__right">
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<div flex-container="row">
+
+    <div flex-item="1">
+    </div>
+
+    <div flex-item="10">
+        <div class="card mt+++ ml+++ mr+++">
+
+            <div flex-container="row">
+                <span flex-item class="fs-title display-block mt++ ml mb text-center">Se connecter</span>
+                <span flex-item class="fs-title display-block mt++ ml mb text-center">Créer un compte</span>
+            </div>
+
+            <div class="divider divider--dark"></div>
+
+            <div flex-container="row">
+
+                <!--Se Connecter-->
+                <!--Form-->
+                <div flex-container="column" flex-item>
+                    <div flex-item class="ml mt+++">
+                        <form class="mt+++">
+                            <lx-text-field label="Login" fixed-label="true" icon="account">
+                                <input type="text" ng-model="textFields.username">
+                            </lx-text-field>
+                            <lx-text-field label="Mot de passe" fixed-label="true" icon="key">
+                                <input type="text" ng-model="textFields.password">
+                            </lx-text-field>
+                        </form>
+                    </div>
+
+                    <!--Boutons-->
+                    <div flex-item class="ml+++ mr+++ text-center">
+                        <a flex-item href="#/welcome">
+                            <button flex-item class="btn btn--m btn--orange btn--raised ml+++ mr+++">
+                                <span>Se connecter</span>
+                            </button>
+                        </a>
+
+                        <a flex-item href="#/welcome">
+                            <button flex-item class="btn btn--m btn--orange btn--raised ml+++ mr+++">
+                                <span>Mot de passe oublié</span>
+                            </button>
+                        </a>
+                    </div>
+
+
+                </div>
+
+                <!--Créer un compte-->
+                <div flex-container="column" flex-item>
+                    <div flex-item class="ml">
+                        <form class="mt">
+                            <lx-text-field label="Login" fixed-label="true" icon="account">
+                                <input type="text" ng-model="textFields.Cusername">
+                            </lx-text-field>
+                            <lx-text-field label="Mot de passe" fixed-label="true" icon="key">
+                                <input type="text" ng-model="textFields.Cpassword">
+                            </lx-text-field>
+                            <lx-text-field label="Mot de passe" fixed-label="true" icon="key">
+                                <input type="text" ng-model="textFields.CpasswordConfirm">
+                            </lx-text-field>
+                            <lx-text-field label="E-mail (De votre école ou université)" fixed-label="true"
+                                           icon="email">
+                                <input type="text" ng-model="textFields.CpasswordConfirm">
+                            </lx-text-field>
+                            <lx-text-field label="Confirmation E-mail" fixed-label="true" icon="email">
+                                <input type="text" ng-model="textFields.CpasswordConfirm">
+                            </lx-text-field>
+                            <lx-text-field label="Ecole ou université" fixed-label="true" icon="school">
+                                <input type="text" ng-model="textFields.CpasswordConfirm">
+                            </lx-text-field>
+                        </form>
+                    </div>
+
+                    <!--Bouton Créer un compte-->
+                    <div flex-item class="ml mt mb+ text-center">
+                        <button class="btn btn--m btn--orange btn--raised" ng-click="accountConfirmCreation()"
+                                ng-disabled="isCreateButtonDisabled">
+                            <span>Créer le compte</span>
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
+
+
+
