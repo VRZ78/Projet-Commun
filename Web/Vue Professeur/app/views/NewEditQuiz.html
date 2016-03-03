@@ -41,7 +41,7 @@
             <div class="card mt+++ ml+++ mr+++">
 
                 <!--Titre de la card-->
-                <span class="fs-title display-block mt++ ml mb">Nouveau Quiz</span>
+                <span class="fs-title display-block mt++ ml mb text-center">Nouveau Quiz</span>
 
                 <!--Diviseur-->
                 <div class="divider divider--dark"></div>
@@ -82,89 +82,100 @@
                         </lx-select>
                     </div>
                 </div>
+            </div>
 
 
-                <!--Pour chaque question-->
-                <div ng-repeat="i in getNumber(number) track by $index">
+            <!--Pour chaque question-->
+            <div ng-repeat="i in getNumberOfQuestions(numberOfQuestions) track by $index">
+
+                <div class="card mt+++ ml+++ mr+++">
+
+
+                    <span class="fs-title display-block mt++ ml mb text-center">Question {{$index+1}}</span>
+
+                    <div class="divider divider--dark"></div>
 
                     <!--Titre de la question-->
                     <div flex-container="row">
                         <div flex-item class="ml">
-                            <lx-text-field label="Question {{$index+1}}">
+                            <lx-text-field label="Titre de la question {{$index+1}}">
                                 <input type="text" ng-model="textFields.question1">
                             </lx-text-field>
                         </div>
                     </div>
 
+                    <div flex-item class="ml">
+                        <lx-select ng-model="selects.selectedNbAnswer" placeholder="Nombre de réponse"
+                                   choices="nbAnswer"
+                                   floating-label>
+                            <lx-select-selected>
+                                {{ $selected.name}}
+                            </lx-select-selected>
+                            <lx-select-choices>
+                                {{ $choice.name }}
+                            </lx-select-choices>
+                            <span>{{setSelectedNbAnswer($index+1, $selected.name)}}</span>
+                        </lx-select>
+                    </div>
+
 
                     <!--Réponses-->
-                    <div flex-container="row">
+                    <div ng-repeat="j in getNbOfAnswer($index+1) track by $index" flex-container="row">
                         <div flex-item class="ml">
-                            <lx-text-field label="Réponse 1">
+                            <lx-text-field label="Réponse {{$index+1}}">
                                 <input type="text" ng-model="textFields.questionReponse1">
                             </lx-text-field>
                         </div>
-                        <div flex-item class="ml">
-                            <lx-text-field label="Réponse 2">
-                                <input type="text" ng-model="textFields.questionReponse2">
-                            </lx-text-field>
-                        </div>
                     </div>
+
+                    <!--Bonnes réponses-->
+
                     <div flex-container="row">
-                        <div flex-item class="ml">
-                            <lx-text-field label="Réponse 3">
-                                <input type="text" ng-model="textFields.questionReponse3">
-                            </lx-text-field>
-                        </div>
-                        <div flex-item class="ml">
-                            <lx-text-field label="Réponse 4">
-                                <input type="text" ng-model="textFields.questionReponse4">
-                            </lx-text-field>
-                        </div>
+                        <span class="fs-subhead display-block mt++ ml mb">Définissez la ou les bonnes réponses : </span>
                     </div>
+
                     <div flex-container="row">
-                        <div flex-item class="ml">
-                            <lx-text-field label="Réponse 5">
-                                <input type="text" ng-model="textFields.questionReponse5">
-                            </lx-text-field>
-                        </div>
-                        <div flex-item class="ml">
-                            <lx-text-field label="Réponse 6">
-                                <input type="text" ng-model="textFields.questionReponse6">
-                            </lx-text-field>
+                        <div flex-item ng-repeat="j in getNbOfAnswer($index+1) track by $index">
+                            <div flex-item class="ml mb">
+                                <lx-checkbox ng-model="questionCheck">Réponse {{$index+1}}</lx-checkbox>
+                            </div>
                         </div>
                     </div>
+
+
                 </div>
-
-                <!--Bouton + et - -->
-                <div flex-container="row" flex-gutter="24">
-                    <div flex-item="5" flex-item-order="1" class="ml+++">
-                    </div>
-
-                    <div flex-item-order="2" class="ml++ mt mb+">
-                        <button class="btn btn--m btn--orange btn--fab" ng-click="increaseNumber()">
-                            <i class="mdi mdi-plus"></i>
-                        </button>
-                    </div>
-                    <div flex-item-order="3" class="ml+++ mt mb+">
-                        <button class="btn btn--m btn--orange btn--fab" ng-click="decreaseNumber()">
-                            <i class="mdi mdi-minus"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!--Bouton Envoyer -->
-                <div flex-container="column" flex-align="space-between center">
-                    <div flex-item class="ml mt mb+">
-                        <a href="#/welcome">
-                            <button class="btn btn--m btn--orange btn--raised" ng-click="confirmCreation()">
-                                <span>Envoyer</span>
-                            </button>
-                        </a>
-                    </div>
-                </div>
-
             </div>
+
+
+            <!--Bouton + et - -->
+            <div flex-container="row" class="mt++" flex-align="space-between center">
+                <div flex-item>
+                </div>
+
+                <div flex-item>
+                    <button class="btn btn--m btn--orange btn--fab" ng-click="increaseNumberOfQuestions()">
+                        <i class="mdi mdi-plus"></i>
+                    </button>
+                </div>
+                <div flex-item>
+                    <button class="btn btn--m btn--orange btn--fab" ng-click="decreaseNumberOfQuestions()">
+                        <i class="mdi mdi-minus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!--Bouton Envoyer -->
+            <div flex-container="column" flex-align="space-between center">
+                <div flex-item class="mt mb+">
+                    <a href="#/welcome">
+                        <button class="btn btn--m btn--orange btn--raised" ng-click="confirmCreation()">
+                            <span>Envoyer</span>
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+
         </div>
 
     </div>

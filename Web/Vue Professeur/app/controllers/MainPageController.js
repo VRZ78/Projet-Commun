@@ -18,8 +18,6 @@ angular.module('RevisatorProfApp')
 
         };
 
-
-
         $scope.removeQuiz = function(array, index){
             array.splice(index, 1);
         }
