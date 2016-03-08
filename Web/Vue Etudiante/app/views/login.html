@@ -1,0 +1,36 @@
+<div class="card">
+    <div class="toolbar">
+
+        <span class="toolbar__label fs-title">Page de connection</span>
+
+        <div class="toolbar__right">
+            <a ng-href="#inscription">
+                <button href="#" class="btn btn--m btn--orange btn--flat" lx-ripple>S'inscire</button>
+            </a>
+        </div>
+
+
+    </div>
+</div>
+
+
+<div flex-item class="card">
+    <form>
+        <lx-text-field label="Login" fixed-label="true" icon="account">
+            <input type="text" ng-model="textFields.fixedFirstName">
+        </lx-text-field>
+
+        <lx-text-field label="Mot de passe" fixed-label="true" icon="key">
+            <input type="text" ng-model="textFields.fixedLastName">
+        </lx-text-field>
+    </form>
+
+    <a ng-href="#tableauDeBord" class="card__actions">
+        <button class="btn btn--m btn--orange btn--raised" lx-ripple>Se connecter</button>
+    </a>
+
+
+
+</div>
+
+

@@ -1,0 +1,25 @@
+<div class="card">
+    <div class="toolbar">
+        <span class="toolbar__label fs-title">C'est partit !!!</span>
+    </div>
+</div>
+
+<div class="p+">
+    <div class="card">
+
+        <div class="p+">
+
+            <div class="paragraph fs-body-1 mt+">
+                <p>
+                   {{question}}
+                </p>
+            </div>
+        </div>
+
+        <div class="card__actions">
+
+            <lx-button lx-color="black" lx-type="flat"  ng-repeat="reponse in reponses" ng-click="questionSuivante()">{{reponse}}</lx-button>
+
+        </div>
+    </div>
+</div>

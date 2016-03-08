@@ -1,0 +1,9 @@
+{
+  "quizz": [{
+    "intitule": "Quizz 1",
+    "id": "1"
+  }, {
+    "intitule": "Quizz 2",
+    "id": "2"
+  }]
+}

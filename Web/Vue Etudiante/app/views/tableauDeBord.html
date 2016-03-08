@@ -1,0 +1,26 @@
+<div class="card">
+    <div class="toolbar">
+
+        <span class="toolbar__label fs-title">Tableau de bord</span>
+
+
+        <a ng-href="#listeMatiere">
+            <button class="btn btn--m btn--orange btn--flat" style="margin-right: 10px">
+                <div flex>Mode solo</div>
+            </button>
+        </a>
+
+        <button class="btn btn--m btn--orange btn--flat">
+            <div flex>Mode multijoueur</div>
+        </button>
+
+    </div>
+</div>
+
+
+<div style="margin-top: 30px">
+    <canvas id="radar" class="chart chart-radar"
+            chart-data="data" chart-labels="labels">
+    </canvas>
+</div>
+>

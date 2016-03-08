@@ -1,0 +1,27 @@
+<div class="card">
+    <div class="toolbar">
+
+        <span class="toolbar__label fs-title">Choisir sa matiere</span>
+
+
+    </div>
+</div>
+
+
+
+
+
+<div class="p+" flex-container="row" flex-gutter="24" flex-wrap>
+    <div flex-item="6">
+
+        <ul class="list mt++">
+
+            <li class="list-row" ng-repeat="matiere in matieres.matieres">
+                <a ng-href="#listeQuizz/{{matiere.id}}">
+                    <lx-button  lx-color="orange" lx-type="flat">{{matiere.intitule}}</lx-button>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</div>
