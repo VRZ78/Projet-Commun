@@ -5,11 +5,11 @@ angular.module('RevisatorProfApp')
     .controller('LoginController', function($scope, $http, LxNotificationService){
 
 
-/*        $http.get('http://localhost:3000/qetQuiz').then(function(response){
-            $scope.lareponse = response.data;
-        },function(reason){
-            console.log(reason);
-        });*/
+        //$http.get('http://localhost:3000/getQuizz').then(function(response){
+        //    $scope.retour = response.data;
+        //},function(reason){
+        //    console.log(reason);
+        //});
 
 
         $scope.accountConfirmCreation = function(quiz)
@@ -19,6 +19,5 @@ angular.module('RevisatorProfApp')
         };
 
         $scope.isCreateButtonDisabled = false;
-
 
     });

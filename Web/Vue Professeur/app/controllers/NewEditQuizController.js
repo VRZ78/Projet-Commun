@@ -107,11 +107,13 @@ angular.module('RevisatorProfApp')
                 questionAnswer: '',
                 correctAnswer: ''
             }]
+            domaine: '',
+            matiere: ''
         };
 
 
         // Variable de désactivation / activation du bouton envoyé
-        $scope.isFormNotFilledCorrectly = true;
+        $scope.isFormNotFilledCorrectly = '';
 
         // Vérification du formulaire
         $scope.formVerification = function () {
@@ -122,25 +124,25 @@ angular.module('RevisatorProfApp')
 
             // Titre
             if ($scope.quizTitle === '' || $scope.quizTitle === undefined) {
-                notification = notification + '- Le titre du quiz n\'est pas renseigné';
+                LxNotificationService.error('- Le titre du quiz n\'est pas renseigné');
                 isSometingWrong = true;
             }
 
             // Domaine
             if ($scope.selectedDomaine === '' || $scope.selectedDomaine === undefined) {
-                notification = notification + '\n- Le domaine du quiz n\'est pas renseigné';
+                LxNotificationService.error('\n- Le domaine du quiz n\'est pas renseigné');
                 isSometingWrong = true;
             }
 
             // Matière
             if ($scope.selectedMatiere === '' || $scope.selectedMatiere === undefined) {
-                notification = notification + '\n- La matière du quiz n\'est pas renseigné';
+                LxNotificationService.error('\n- La matière du quiz n\'est pas renseigné');
                 isSometingWrong = true;
             }
 
             // Nombre de question
             if ($scope.numberOfQuestions === 1) {
-                notification = notification + '\n- Un quiz ne peut pas avoir qu\'une seule question';
+                LxNotificationService.error('\n- Un quiz ne peut pas avoir qu\'une seule question');
                 isSometingWrong = true;
             }
 
@@ -149,40 +151,40 @@ angular.module('RevisatorProfApp')
                 areCorrectAnswer = false;
                 // Question renseignée
                 if (angular.isUndefined($scope.quiz.questions[i])) {
-                    notification = notification + '\n- La question ' + i + ' et ses réponses ne sont pas renseignés';
+                    LxNotificationService.error('\n- La question ' + i + ' et ses réponses ne sont pas renseignés');
                     isSometingWrong = true;
                     // Nb de réponses
                     if ($scope.nbAnswer[i] === 1 || $scope.nbOfAnswer[i] === undefined) {
-                        notification = notification + '\n- La questoion ' + i + ' ne possède qu\' une seule réponse';
+                        LxNotificationService.error('\n- La questoion ' + i + ' ne possède qu\' une seule réponse');
                         isSometingWrong = true;
                     }
                 } else {
                     // Question
                     if ($scope.quiz.questions[i].questionTitle === '') {
-                        notification = notification + '\n- Le titre de la questoion ' + i + ' n\'est pas renseigné';
+                        LxNotificationService.error('\n- Le titre de la questoion ' + i + ' n\'est pas renseigné');
                         isSometingWrong = true;
                     }
                     // Nb de réponses
                     if ($scope.nbAnswer[i] === 1 || $scope.nbOfAnswer[i] === undefined) {
-                        notification = notification + '\n- La questoion ' + i + ' ne possède qu\' une seule réponse';
+                        LxNotificationService.error('\n- La questoion ' + i + ' ne possède qu\' une seule réponse');
                         isSometingWrong = true;
                     }
                     // Réponses
                     for (j = 1; j <= $scope.nbOfAnswer[i]; j++) {
                         if (angular.isUndefined($scope.quiz.questions[i].questionAnswer[j])) {
-                            notification = notification + '\n- La réponse ' + j + ' de la questoion ' + i + ' n\'est pas renseigné';
+                            LxNotificationService.error('\n- La réponse ' + j + ' de la questoion ' + i + ' n\'est pas renseigné');
                             isSometingWrong = true;
                         }
                         else {
                             if ($scope.quiz.questions[i].questionAnswer[j] === '') {
-                                notification = notification + '\n- La réponse ' + j + ' de la questoion ' + i + ' n\'est pas renseigné';
+                                LxNotificationService.error('\n- La réponse ' + j + ' de la questoion ' + i + ' n\'est pas renseigné');
                                 isSometingWrong = true;
                             }
                         }
                         // Réponses correctes
                         if (angular.isUndefined($scope.quiz.questions[i].correctAnswer)){
                            if(j === $scope.nbOfAnswer[i]) {
-                               notification = notification + '\n- La question ' + i + ' n\' a pas de bonne réponse';
+                               LxNotificationService.error('\n- La question ' + i + ' n\' a pas de bonne réponse');
                                isSometingWrong = true;
                            }
 
@@ -192,7 +194,7 @@ angular.module('RevisatorProfApp')
                                 areCorrectAnswer = true;
                             }
                             if(areCorrectAnswer === false && j === $scope.nbOfAnswer[i]){
-                                notification = notification + '\n- La question ' + i + ' n\' a pas de bonne réponse';
+                                LxNotificationService.error('\n- La question ' + i + ' n\' a pas de bonne réponse');
                                 isSometingWrong = true;
                             }
                         }
@@ -204,7 +206,7 @@ angular.module('RevisatorProfApp')
             }
 
             if (isSometingWrong === true) {
-                LxNotificationService.error(notification);
+                $scope.isFormNotFilledCorrectly = true;
             } else {
                 $scope.isFormNotFilledCorrectly = false;
             }
