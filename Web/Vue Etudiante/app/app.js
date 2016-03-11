@@ -6,6 +6,7 @@ var myApp = angular.module('myRevisator',
         'tableauDeBordCtrl',
         'listeMatiereCtrl',
         'listeQuizzCtrl',
-        'quizzCtrl']);
+        'quizzCtrl',
+        'statistiqueCtrl']);
 
 

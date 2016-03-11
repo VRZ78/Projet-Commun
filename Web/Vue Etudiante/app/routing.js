@@ -27,6 +27,10 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         templateUrl: 'app/views/quizz.html',
         controller: 'quizzCtrl'
     });
+    $routeProvider.when('/statistique', {
+        templateUrl: 'app/views/statistique.html',
+        controller: 'statistiqueCtrl'
+    });
     $routeProvider.otherwise({
         redirectTo: '/accueil'
     });

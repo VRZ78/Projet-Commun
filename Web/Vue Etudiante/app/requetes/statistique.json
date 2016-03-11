@@ -1,0 +1,41 @@
+{
+  "statistique": [
+    {
+      "label": ["January", "February", "March", "April", "May", "June", "July"],
+      "series": ["Math"],
+      "data": [
+        [65, 59, 80, 81, 56, 55, 40]
+      ]
+    },{
+      "label": ["January", "February", "March", "April", "May", "June", "July"],
+      "series": ["Français"],
+      "data": [
+        [65, 59, 80, 81, 56, 55, 40]
+      ]
+    },{
+      "label": ["January", "February", "March", "April", "May", "June", "July"],
+      "series": ["Allemand"],
+      "data": [
+        [65, 59, 80, 81, 56, 55, 40]
+      ]
+    },{
+      "label": ["January", "February", "March", "April", "May", "June", "July"],
+      "series": ["Series A"],
+      "data": [
+        [65, 59, 80, 81, 56, 55, 40]
+      ]
+    },{
+      "label": ["January", "February", "March", "April", "May", "June", "July"],
+      "series": ["Series A"],
+      "data": [
+        [65, 59, 80, 81, 56, 55, 40]
+      ]
+    },{
+      "label": ["January", "February", "March", "April", "May", "June", "July"],
+      "series": ["Series A"],
+      "data": [
+        [65, 59, 80, 81, 56, 55, 40]
+      ]
+    }
+  ]
+}
