@@ -1,9 +1,8 @@
-
 var http = require('http');
 var express = require('express');
 var app = express();
 var mysql = require('mysql');
-
+var userId;
 var connection = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
@@ -20,31 +19,54 @@ if(!err) {
 }
 });
 
-
-//pour récuperer la liste des quiz
-app.get('/listeQuizz', function(req, res) {
-	connection.query("select * from quizz;", function(err, rows, fileds){
+//recuperer choix de matiere (en fonction des formations)
+app.get('/listeMatieres', function(req, res) {
+	userId = req.headers.Auhtorization; //recuperation de l'id
+	connection.query("select matiere.nom from quizz, matiere where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte = 3) and idMatiere =Matiere_idMatiere;", function(err, rows, fileds){
 	if(!err)
 		res.status(200).json(rows);
 	else
-		res.send("error");
-  });
+		res.status(404).json("error");	
+  });	
 });
 
-//recuperer le quizz 
 
-app.get('/listeQuizz/:id_quizz', function(req,res){
+
+//pour récuperer la liste des quiz correspondant à la matiere choisie
+app.get('/listeQuizz/:id_matiere', function(req, res) {
+		res.status(200).json(req.currents_quizz);
+});
+
+app.param('id_matiere', function(req, res, next, id){
+	
+	userId = req.headers.Auhtorization; //recuperation de l'id
+	connection.query("select * from quizz where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte = 3) and Matiere_idMatiere="+id+" ;", function(err, rows, fileds){
+	if(!err){
+		//"+userId+"
+		req.currents_quizz = rows;
+		next();
+	}else{
+		res.status(404).send("error");
+	}
+  });
+ });
+
+
+//recuperer les questions qui se rapportent au quizz choisi
+
+app.get('/quizz/:id_quizz', function(req,res){
 	res.status(200).json(req.current_quizz)
 });
 
 app.param('id_quizz', function(req, res, next, id){
 	
-connection.query("select * from quizz where idQuizz ="+id+";",function(err, rows, fileds){
+connection.query("select * from question where Quizz_idQuizz ="+id+";",function(err, rows, fileds){
 	if(!err){
 		
-		req.current_quizz = rows[0];
+		req.current_quizz = rows;
 		next();
 	}else{
+		
 		res.status(404).send("error");
 	}
   });
