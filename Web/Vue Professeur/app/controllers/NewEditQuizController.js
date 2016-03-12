@@ -106,14 +106,14 @@ angular.module('RevisatorProfApp')
                 questionTitle: '',
                 questionAnswer: '',
                 correctAnswer: ''
-            }]
+            }],
             domaine: '',
             matiere: ''
-        };
+    };
 
 
-        // Variable de désactivation / activation du bouton envoyé
-        $scope.isFormNotFilledCorrectly = '';
+// Variable de désactivation / activation du bouton envoyé
+$scope.isFormNotFilledCorrectly = '';
 
         // Vérification du formulaire
         $scope.formVerification = function () {
