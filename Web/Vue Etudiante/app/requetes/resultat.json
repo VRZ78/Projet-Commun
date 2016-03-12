@@ -1,0 +1,13 @@
+{
+  "resultat": [{
+    "intituleQuestion": "Question1",
+    "estJuste": false,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question"
+  }, {
+    "intituleQuestion": "Question2",
+    "isJuste": true,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question"
+  }]
+}

@@ -1,0 +1,67 @@
+<div class="card">
+    <div class="toolbar">
+
+        <span class="toolbar__label fs-title">Resultat</span>
+
+
+    </div>
+</div>
+
+
+<div class=" p+" flex-container="column" flex-align="space-between center" style="height: 250px">
+
+
+    <div flex-item flex-item-order="1">
+
+        <div class="p+" ng-repeat="res in resultat">
+
+
+
+            <div ng-if="res.estJuste == true">
+                <div class="p+ bgc-green-500">
+                    <div class="card">
+                        <div class="p+">
+                            <strong class="fs-headline display-block">{{res.intituleQuestion}}</strong>
+                            <span class="fs-subhead tc-black-2 display-block">La/les bonne(s) réponse(s) sont : {{res.BonneReponse}}</span>
+
+
+
+                            <div class="paragraph fs-body-1 mt+">
+                                <p>
+                                    {{res.commentaire}}
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-if="res.estJuste == false">
+                <div class="p+ bgc-red-500">
+                    <div class="card">
+                        <div class="p+">
+                            <strong class="fs-headline display-block">{{res.intituleQuestion}}</strong>
+                            <span class="fs-subhead tc-black-2 display-block">La/les bonne(s) réponse(s) sont : {{res.BonneReponse}}</span>
+
+
+
+                            <div class="paragraph fs-body-1 mt+">
+                                <p>
+                                    {{res.commentaire}}
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+</div>

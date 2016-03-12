@@ -7,7 +7,8 @@ var myApp = angular.module('myRevisator',
         'listeMatiereCtrl',
         'listeQuizzCtrl',
         'quizzCtrl',
-        'statistiqueCtrl']).config(function ($httpProvider) {
+        'statistiqueCtrl',
+        'resultatCtrl']).config(function ($httpProvider) {
         $httpProvider.interceptors.push(function ($q, sharedStorageService) {
             return {
                 'request': function (config) {
@@ -20,14 +21,17 @@ var myApp = angular.module('myRevisator',
                 }
             };
         });
-    }).factory('sharedStorageService', function() {
+    }).factory('sharedStorageService', function () {
         var savedData = {};
+
         function set(data) {
             savedData = data;
         }
+
         function get() {
             return savedData;
         }
+
         return {
             set: set,
             get: get
