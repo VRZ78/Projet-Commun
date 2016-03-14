@@ -60,7 +60,7 @@ app.get('/quizz/:id_quizz', function(req,res){
 
 app.param('id_quizz', function(req, res, next, id){
 	
-connection.query("select * from question where Quizz_idQuizz ="+id+";",function(err, rows, fileds){
+connection.query("select * from question, proposition where Question_idQuestion=idQuestion and Quizz_idQuizz ="+id+";",function(err, rows, fileds){
 	if(!err){
 		
 		req.current_quizz = rows;
@@ -72,6 +72,47 @@ connection.query("select * from question where Quizz_idQuizz ="+id+";",function(
   });
 
 });
+
+// page inscription 
+
+app.get('/inscription/formation', function(req, res) {
+	userId = req.headers.Auhtorization; //recuperation de l'id
+	connection.query("select * from niveau_etude;", function(err, rows, fileds){
+	if(!err)
+		res.status(200).json(rows);
+	else
+		res.status(404).json("error");	
+  });	
+});
+
+app.get('/inscription/etablissement', function(req, res) {
+	userId = req.headers.Auhtorization; //recuperation de l'id
+	connection.query("select * from etablissement;", function(err, rows, fileds){
+	if(!err)
+		res.status(200).json(rows);
+	else
+		res.status(404).json("error");	
+  });	
+});
+
+
+
+
+/*app.post('/inscription', function(req,res){
+	var etablissement = "select idEtablissement from etablissement where nom ="+req.body.etablissement;
+	var etude="select idNiveau_etude from niveau_etude where niveau="+req.body.niveau_etude;
+	connection.query("INSERT INTO `compte` (`pseudo`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`) VALUES ("+req.body.pseudo+","+req.body.nom+","+req.body.prenom+","+req.body.date_naissance+","+req.body.password+",1,"+etablissement+","+etude+");"),function(err, rows, fields){
+	 	if(!err)
+	 		console.log("succes de l'ajout");
+	 	else
+	 		console.log("erreur lors de l'ajout");
+	 });
+});
+
+app.post('/vuep/inscription', function(req,res){
+	//changer type par 2...;
+}); */
+
 //
 app.listen(8080);
 
