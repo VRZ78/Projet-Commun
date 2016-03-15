@@ -187,7 +187,7 @@ app.get('/quizz/:id_quizz', function(req,res){
 
 app.param('id_quizz', function(req, res, next, id){
 	
-connection.query("select idQuestion, proposition, estValide, nom from proposition, question where Quizz_idQuizz = "+id+" group by idQuestion, nom, proposition, estValide;",function(err, rows, fileds){
+connection.query("select idQuestion, proposition, estValide, nom from proposition, question where Quizz_idQuizz = "+id+" and question.idQuestion= Question_idQuestion group by idQuestion, nom, proposition, estValide",function(err, rows, fileds){
 	if(!err){
 		
 		req.current_quizz = rows;
