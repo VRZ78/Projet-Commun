@@ -20,6 +20,91 @@ if(!err) {
 }
 });
 
+//ajouter un quizz dans la base de données
+app.post('/ajouterQuizz', function(req, res) {
+	userId = req.headers.Auhtorization;
+	nomQuizz = req.body.title;
+	nomMatiere = req.body.matiere.name;
+	niveauEtude = req.body.year.name;
+	nombreQuestion = req.body.nbOfQuestions;
+	
+	connection.query("INSERT INTO Quizz(nom, Compte_idCompte, Matiere_idMatiere, Niveau_etude_idNiveau_etude) VALUES ("++", "+userId+", "++", "++");",function(error, rows){         
+        if(error != null) {
+            resp.end("Query error:" + error);
+        } else {
+            resp.end("Success!");
+        }
+		
+        connection.end();
+	});
+	
+	connection.query("SELECT * FROM Quizz ORDER BY idQuizz desc LIMIT 1;", function select(err, rows, fields) {
+		if (err) {
+		  console.log(err);
+		  connection.end();
+		  return;
+		}
+	 
+		if (rows.length > 0) { 
+			var firstResult = rows[0];
+			var idQuizz = firstResult['idQuizz'];
+		} else {
+			console.log("Pas de données");
+		}
+		
+		connection.end();
+	});
+	
+	for(i = 1; i <= nombreQuestion; i++) {
+		
+		nomQuestion = req.body.questions[i].questionTitle;
+		nombreReponse = req.body.questions[i].nombreReponse;
+		
+		connection.query("INSERT INTO Question(nom, Quizz_idQuizz) VALUES ("+nomQuestion+", "+idQuizz+");",function(error, rows){         
+			if(error != null) {
+				resp.end("Query error:" + error);
+			} else {
+				resp.end("Success!");
+			}
+			
+			connection.end();
+		});
+
+		connection.query("SELECT * FROM Question ORDER BY idQestion desc LIMIT 1;", function select(err, rows, fields) {
+			if (err) {
+			  console.log(err);
+			  connection.end();
+			  return;
+			}
+		 
+			if (rows.length > 0) { 
+				var firstResult = rows[0];
+				var idQuestion = firstResult['idQuestion'];
+			} else {
+				console.log("Pas de données");
+			}
+			
+			connection.end();
+		});
+		
+		for(j = 1; j <= nombreReponse; j++) {
+			
+			proposition = req.body.question[i].questionAnswer[j];
+			estValide = req.body.question[i].correctAnswer[j];
+			
+			connection.query("INSERT INTO Proposition(proposition, estValide, Question_idQuestion) VALUES ("+proposition+", "+estValide+", "+idQuestion+");",function(error, rows){         
+				if(error != null) {
+					resp.end("Query error:" + error);
+				} else {
+					resp.end("Success!");
+				}
+				
+				connection.end();
+			});
+		}
+	}	
+});
+
 //config cors
 app.use(cors({
 	allowedOrigins : ['localhost'],
