@@ -2,6 +2,7 @@ var http = require('http');
 var express = require('express');
 var app = express();
 var mysql = require('mysql');
+var cors = require('express-cors');
 var userId;
 var connection = mysql.createConnection({
 	host: 'localhost',
@@ -19,10 +20,17 @@ if(!err) {
 }
 });
 
+//config cors
+app.use(cors({
+	allowedOrigins : ['localhost'],
+	headers : ['Content-Type', 'Auhtorization']
+}));
+
+
 //recuperer choix de matiere (en fonction des formations)
 app.get('/listeMatieres', function(req, res) {
 	userId = req.headers.Auhtorization; //recuperation de l'id
-	connection.query("select matiere.nom from quizz, matiere where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte = 3) and idMatiere =Matiere_idMatiere;", function(err, rows, fileds){
+	connection.query("select matiere.nom matiere.idMatiere from quizz, matiere where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte ="+userId+") and idMatiere =Matiere_idMatiere;", function(err, rows, fileds){
 	if(!err)
 		res.status(200).json(rows);
 	else
@@ -40,7 +48,7 @@ app.get('/listeQuizz/:id_matiere', function(req, res) {
 app.param('id_matiere', function(req, res, next, id){
 	
 	userId = req.headers.Auhtorization; //recuperation de l'id
-	connection.query("select * from quizz where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte = 3) and Matiere_idMatiere="+id+" ;", function(err, rows, fileds){
+	connection.query("select * from quizz where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte = "+userId+") and Matiere_idMatiere="+id+" ;", function(err, rows, fileds){
 	if(!err){
 		//"+userId+"
 		req.currents_quizz = rows;
