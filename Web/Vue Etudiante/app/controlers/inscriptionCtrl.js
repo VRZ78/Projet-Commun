@@ -26,6 +26,8 @@ inscriptionCtrl.controller('inscriptionCtrl', function ($scope, $http, LxNotific
         {name: 'Doctorat'}
     ];
 
+
+
     // ng-models
     $scope.inscEleve = {
         username: "",

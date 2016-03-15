@@ -20,10 +20,15 @@
             </div>
         </div>
 
-        <div class="card__actions" ng-repeat="reponse in reponses">
+        <div  ng-repeat="reponse in quizz">
+            <strong class="fs-headline display-block">{{reponse.nom}}</strong>
+        </div>
+
+
+        <div class="card__actions" ng-repeat="reponse in quizz">
             <div class="checkbox mt+">
                 <input type="checkbox" id="checkbox_{{$index}}" class="checkbox__input">
-                <label for="checkbox_{{$index}}" class="checkbox__label">{{reponse}}</label>
+                <label for="checkbox_{{$index}}" class="checkbox__label">{{reponse.lo}}</label>
             </div>
         </div>
         <button class="btn btn--m btn--orange btn--raised m++" ng-click="questionSuivante()" lx-ripple>Suivant</button>
