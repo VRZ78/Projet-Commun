@@ -28,7 +28,41 @@ app.post('/ajouterQuizz', function(req, res) {
 	niveauEtude = req.body.year.name;
 	nombreQuestion = req.body.nbOfQuestions;
 	
-	connection.query("INSERT INTO Quizz(nom, Compte_idCompte, Matiere_idMatiere, Niveau_etude_idNiveau_etude) VALUES ("++", "+userId+", "++", "++");",function(error, rows){         
+	connection.query("SELECT * FROM Matiere WHERE nom = '"+nomMatiere+"';", function select(err, rows, fields) {
+		if (err) {
+		  console.log(err);
+		  connection.end();
+		  return;
+		}
+	 
+		if (rows.length > 0) { 
+			var firstResult = rows[0];
+			var idMatiere = firstResult['idMatiere'];
+		} else {
+			console.log("Pas de données");
+		}
+		
+		connection.end();
+	});
+	
+	connection.query("SELECT * FROM Niveau_etude WHERE niveau = '"+niveauEtude+"';", function select(err, rows, fields) {
+		if (err) {
+		  console.log(err);
+		  connection.end();
+		  return;
+		}
+	 
+		if (rows.length > 0) { 
+			var firstResult = rows[0];
+			var idNiveauEtude = firstResult['idNiveau_etude'];
+		} else {
+			console.log("Pas de données");
+		}
+		
+		connection.end();
+	});
+	
+	connection.query("INSERT INTO Quizz(nom, Compte_idCompte, Matiere_idMatiere, Niveau_etude_idNiveau_etude) VALUES ("+nomQuizz+", "+userId+", "+idMatiere+", "+idNiveauEtude+");",function(error, rows){         
         if(error != null) {
             resp.end("Query error:" + error);
         } else {
