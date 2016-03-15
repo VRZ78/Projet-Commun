@@ -1,4 +1,4 @@
-<div class="card" >
+<div class="card">
     <div class="toolbar bgc-green-700 tc-white-1">
 
         <!--Toolbar title-->
@@ -8,30 +8,37 @@
 </div>
 
 
-
-
 <div class="p+">
     <div class="card">
 
         <div class="p+">
+            <!--
+                        <div class="paragraph fs-body-1 mt+">
+                            <strong class="fs-headline display-block">{{question}}</strong>
+                        </div>
+              -->
+        </div>
 
+
+        <div class="card__actions" ng-repeat="question in quizz.questions">
             <div class="paragraph fs-body-1 mt+">
-                <strong class="fs-headline display-block">{{question}}</strong>
+                <strong class="fs-headline display-block">{{question.question}}</strong>
+            </div>
+            <div class="checkbox mt+" ng-repeat="reponse in question.reponse">
+                <!--
+                 <input type="checkbox" id="checkbox_{{$index}}" class="checkbox__input">
+                 <label for="checkbox_{{$index}}" class="checkbox__label">{{reponse.reponse}}</label>
+ -->
+                <lx-checkbox ng-model="reponse.estChecker">{{reponse.reponse}}</lx-checkbox>
+
             </div>
         </div>
 
-        <div  ng-repeat="reponse in quizz">
-            <strong class="fs-headline display-block">{{reponse.nom}}</strong>
-        </div>
 
+       <a ng-href="#/resultat">
+            <button ng-click="enregistrerResultatLocalStorage()" class="btn btn--m btn--orange btn--raised m++" lx-ripple>Terminer</button>
+        </a>
 
-        <div class="card__actions" ng-repeat="reponse in quizz">
-            <div class="checkbox mt+">
-                <input type="checkbox" id="checkbox_{{$index}}" class="checkbox__input">
-                <label for="checkbox_{{$index}}" class="checkbox__label">{{reponse.lo}}</label>
-            </div>
-        </div>
-        <button class="btn btn--m btn--orange btn--raised m++" ng-click="questionSuivante()" lx-ripple>Suivant</button>
 
     </div>
 </div>

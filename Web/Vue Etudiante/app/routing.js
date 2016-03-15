@@ -31,6 +31,11 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         templateUrl: 'app/views/statistique.html',
         controller: 'statistiqueCtrl'
     });
+    $routeProvider.when('/resultat/:idResultatQuizz', {
+        templateUrl: 'app/views/resultat.html',
+        controller: 'resultatCtrl'
+    });
+    //a enlever une fois que les resultat sont bien transmi
     $routeProvider.when('/resultat', {
         templateUrl: 'app/views/resultat.html',
         controller: 'resultatCtrl'
