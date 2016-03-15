@@ -95,20 +95,29 @@ angular.module('RevisatorProfApp')
             return new Array($scope.nbOfAnswer[questionNb]);
         };
 
-        // Affiche un Toast lors de la création d'un compte
-        $scope.confirmCreation = function (quiz) {
-            LxNotificationService.success('Votre quiz a bien été créé');
+        // Fonction appelée lors de l'appui sur le bouton de création du quiz
+        $scope.confirmCreation = function () {
+            if ($scope.hasSendQuizButtonBeenClicked != true) {
+                $scope.quiz.nbOfQuestions = $scope.numberOfQuestions;
+                $http.post('http://localhost:8080/sendQuiz', JSON.stringify($scope.quiz)).then(function (response) {
+                    LxNotificationService.success('Votre quiz a bien été créé');
+                    $scope.hasSendQuizButtonBeenClicked = true;
+                }, function () {
+                    LxNotificationService.error('Impossible de contacter le serveur');
+                });
+            }
         };
 
         $scope.quiz = {
-            title: '',
+            title: "",
             questions: [{
-                questionTitle: '',
-                questionAnswer: '',
-                correctAnswer: ''
+                questionTitle: "",
+                questionAnswer: "",
+                correctAnswer: ""
             }],
-            domaine: '',
-            matiere: ''
+            domaine: "",
+            matiere: "",
+            nbOfQuestions: ""
     };
 
 
@@ -123,7 +132,7 @@ $scope.isFormNotFilledCorrectly = '';
             var areCorrectAnswer = false;
 
             // Titre
-            if ($scope.quizTitle === '' || $scope.quizTitle === undefined) {
+            if ($scope.quiz.title === '' || $scope.quiz.title === undefined) {
                 LxNotificationService.error('- Le titre du quiz n\'est pas renseigné');
                 isSometingWrong = true;
             }
@@ -213,5 +222,6 @@ $scope.isFormNotFilledCorrectly = '';
 
         };
 
+        $scope.hasSendQuizButtonBeenClicked = false;
 
     });

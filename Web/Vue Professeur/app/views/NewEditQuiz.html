@@ -50,7 +50,7 @@
                 <div flex-container="row">
                     <div flex-item class="ml">
                         <lx-text-field label="Titre du quiz">
-                            <input type="text" ng-model="quizTitle">
+                            <input type="text" ng-model="quiz.title">
                         </lx-text-field>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                 <!--Domaine et matière-->
                 <div flex-container="row">
                     <div flex-item class="ml">
-                        <lx-select ng-model="selectedDomaineModel" placeholder="Domaine" choices="domaine"
+                        <lx-select ng-model="quiz.domaine" placeholder="Domaine" choices="domaine"
                                    floating-label>
                             <lx-select-selected>
                                 {{ $selected.name}}
@@ -70,7 +70,7 @@
                         </lx-select>
                     </div>
                     <div flex-item class="ml">
-                        <lx-select ng-model="selectedMatiereModel" placeholder="Matière" choices="matiere"
+                        <lx-select ng-model="quiz.matiere" placeholder="Matière" choices="matiere"
                                    floating-label>
                             <lx-select-selected>
                                 {{ $selected.name }}
