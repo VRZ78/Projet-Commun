@@ -142,14 +142,14 @@ app.post('/ajouterQuizz', function(req, res) {
 //config cors
 app.use(cors({
 	allowedOrigins : ['localhost'],
-	headers : ['Content-Type', 'Auhtorization']
+	headers : ['Content-Type', 'Authorization']
 }));
 
 
 //recuperer choix de matiere (en fonction des formations)
 app.get('/listeMatieres', function(req, res) {
 	userId = req.headers.Auhtorization; //recuperation de l'id
-	connection.query("select matiere.nom matiere.idMatiere from quizz, matiere where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte ="+userId+") and idMatiere =Matiere_idMatiere;", function(err, rows, fileds){
+	connection.query("select matiere.nom, matiere.idMatiere from quizz, matiere where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte ="+userId+") and idMatiere =Matiere_idMatiere;", function(err, rows, fileds){
 	if(!err)
 		res.status(200).json(rows);
 	else
@@ -187,7 +187,7 @@ app.get('/quizz/:id_quizz', function(req,res){
 
 app.param('id_quizz', function(req, res, next, id){
 	
-connection.query("select * from question, proposition where Question_idQuestion=idQuestion and Quizz_idQuizz ="+id+";",function(err, rows, fileds){
+connection.query("select proposition, estValide, nom from proposition, question where Quizz_idQuizz = "+id+" group by nom, proposition, estValide;",function(err, rows, fileds){
 	if(!err){
 		
 		req.current_quizz = rows;
@@ -221,8 +221,6 @@ app.get('/inscription/etablissement', function(req, res) {
 		res.status(404).json("error");	
   });	
 });
-
-
 
 
 /*app.post('/inscription', function(req,res){
