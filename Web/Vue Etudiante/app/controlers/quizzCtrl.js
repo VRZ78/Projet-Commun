@@ -19,28 +19,52 @@ quizzCtrl.controller('quizzCtrl', function ($scope, $http,$routeParams) {
             ]
         };
 
-        var idDepart=response.data[0].idQuestion;
-        console.log("nome "+response.data[0].nom);
+        var idDepart=-1;
+        console.log("nom "+response.data[0].nom);
         var position = 0;
-
         var question = {
             "question" : "",
+            "idQuestion" : null,
             "reponse" :[]
         };
+
+        //Injection des questions
         for(var i=0; i<response.data.length;i++){
             question.question= response.data[i].nom;
-            if(idDepart===response.data[i].idQuestion){
-                question.reponse.push(response.data[i].proposition);
-            }else{
+            question.idQuestion=response.data[i].idQuestion;
+            if(idDepart!==response.data[i].idQuestion ){
+                //On push la question et le tableau de questions
                 questions.questions.push(question);
+                //On change de question
                 position++;
                 idDepart=response.data[i].idQuestion;
+                //remise à zero
                 question = {
                     "question" : "",
                     "reponse" :[]
                 };
             }
         }
+        //Injection des reponses correspondant aux questions
+        var idQuestionPourInjecterReponse=response.data[0].idQuestion;
+        var positionReponse = 0;
+        console.log(response.data.length);
+        for(var i=0; i < response.data.length;i++){
+            if(idQuestionPourInjecterReponse==response.data[i].idQuestion){
+                console.log(i+" et injection "+response.data[i].proposition);
+                questions.questions[positionReponse].reponse.push(response.data[i].proposition);
+            }else{
+                //console.log("position "+positionReponse);
+                idQuestionPourInjecterReponse=response.data[i].idQuestion;
+                positionReponse++;
+                console.log(i+" et injection "+response.data[i].proposition);
+                questions.questions[positionReponse].reponse.push(response.data[i].proposition);
+            }
+
+        }
+
+
+
         console.log("voici les questions");
         console.log(questions);
 
