@@ -36,7 +36,22 @@ var myApp = angular.module('myRevisator',
             set: set,
             get: get
         }
-    });
+    }).factory('saveResultatQuizz', function () {
+    var savedData = {};
+
+    function set(data) {
+        savedData = data;
+    }
+
+    function get() {
+        return savedData;
+    }
+
+    return {
+        set: set,
+        get: get
+    }
+});
 
 
 

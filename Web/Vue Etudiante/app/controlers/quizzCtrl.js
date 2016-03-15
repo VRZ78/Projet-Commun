@@ -5,8 +5,10 @@
 
 
 var quizzCtrl = angular.module('quizzCtrl', []);
-quizzCtrl.controller('quizzCtrl', function ($scope, $http, $routeParams,sharedStorageService) {
-    console.log("quizzCtrl");
+quizzCtrl.controller('quizzCtrl', function ($scope, $http, $routeParams,saveResultatQuizz) {
+
+
+
 
     $http.get('http://localhost:8080/quizz/' + $routeParams.idQuizz).then(function (response) {
         $scope.quizz = response.data;
@@ -74,18 +76,20 @@ quizzCtrl.controller('quizzCtrl', function ($scope, $http, $routeParams,sharedSt
 //        $scope.resultatPourQuizz = $scope.quizz;
 
         $scope.enregistrerResultatLocalStorage = function () {
-        //TODO  : Enregistrer les resultats en local storage car impossible de transmettre via $routeparam
-            console.log($scope.resultatPourQuizz);
+            console.log("saveResultatQuizz");
+            saveResultatQuizz.set(questions);
+            console.log(saveResultatQuizz.get());
+        };
 
 
-        }
+
+
+
 
 
     }, function (reason) {
         console.log(reason);
     });
-
-
 
 
 });
