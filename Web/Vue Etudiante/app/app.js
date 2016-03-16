@@ -8,14 +8,15 @@ var myApp = angular.module('myRevisator',
         'listeQuizzCtrl',
         'quizzCtrl',
         'statistiqueCtrl',
-        'resultatCtrl']).config(function ($httpProvider) {
+        'resultatCtrl'])
+    .config(function ($httpProvider) {
         $httpProvider.interceptors.push(function ($q, sharedStorageService) {
             return {
                 'request': function (config) {
 
 
                     config.headers = config.headers || {};
-                    config.headers.Authorization = sharedStorageService.get();
+                    config.headers.Authorization = 3; // sharedStorageService.get();
 
                     return config || $q.when(config);
                 }

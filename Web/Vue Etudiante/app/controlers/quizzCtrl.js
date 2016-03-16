@@ -7,8 +7,9 @@
 var quizzCtrl = angular.module('quizzCtrl', []);
 quizzCtrl.controller('quizzCtrl', function ($scope, $http, $routeParams,saveResultatQuizz) {
 
-
-
+    console.log("ID QUIZZ");
+    console.log($routeParams);
+    $scope.idQuizz = $routeParams.idQuizz;
 
     $http.get('http://localhost:8080/quizz/' + $routeParams.idQuizz).then(function (response) {
         $scope.quizz = response.data;
