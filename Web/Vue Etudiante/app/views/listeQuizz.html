@@ -48,10 +48,10 @@
 
             <ul class="list">
                 <li class="card m+ p+" flex-container="column" flex-align="space-between center"
-                    ng-repeat="quizz in listeQuizz.quizz">
+                    ng-repeat="quizz in listeQuizz">
 
-                    <a ng-href="#quizz/{{quizz.id}}">
-                        <lx-button lx-color="orange" lx-type="flat">{{quizz.intitule}}</lx-button>
+                    <a ng-href="#quizz/{{quizz.idQuizz}}">
+                        <lx-button lx-color="orange" lx-type="flat">{{quizz.nom}}</lx-button>
                     </a>
 
                 </li>

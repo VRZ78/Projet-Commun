@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var mysql = require('mysql');
 var cors = require('express-cors');
+var bodyParser = require('body-parser');
 var userId;
 var connection = mysql.createConnection({
 	host: 'localhost',
@@ -20,136 +21,20 @@ if(!err) {
 }
 });
 
-//ajouter un quizz dans la base de données
-app.post('/ajouterQuizz', function(req, res) {
-	userId = req.headers.Auhtorization;
-	nomQuizz = req.body.title;
-	nomMatiere = req.body.matiere.name;
-	niveauEtude = req.body.year.name;
-	nombreQuestion = req.body.nbOfQuestions;
-	
-	connection.query("SELECT * FROM Matiere WHERE nom = '"+nomMatiere+"';", function select(err, rows, fields) {
-		if (err) {
-		  console.log(err);
-		  connection.end();
-		  return;
-		}
-	 
-		if (rows.length > 0) { 
-			var firstResult = rows[0];
-			var idMatiere = firstResult['idMatiere'];
-		} else {
-			console.log("Pas de données");
-		}
-		
-		connection.end();
-	});
-	
-	connection.query("SELECT * FROM Niveau_etude WHERE niveau = '"+niveauEtude+"';", function select(err, rows, fields) {
-		if (err) {
-		  console.log(err);
-		  connection.end();
-		  return;
-		}
-	 
-		if (rows.length > 0) { 
-			var firstResult = rows[0];
-			var idNiveauEtude = firstResult['idNiveau_etude'];
-		} else {
-			console.log("Pas de données");
-		}
-		
-		connection.end();
-	});
-	
-	connection.query("INSERT INTO Quizz(nom, Compte_idCompte, Matiere_idMatiere, Niveau_etude_idNiveau_etude) VALUES ("+nomQuizz+", "+userId+", "+idMatiere+", "+idNiveauEtude+");",function(error, rows){         
-        if(error != null) {
-            resp.end("Query error:" + error);
-        } else {
-            resp.end("Success!");
-        }
-		
-        connection.end();
-	});
-	
-	connection.query("SELECT * FROM Quizz ORDER BY idQuizz desc LIMIT 1;", function select(err, rows, fields) {
-		if (err) {
-		  console.log(err);
-		  connection.end();
-		  return;
-		}
-	 
-		if (rows.length > 0) { 
-			var firstResult = rows[0];
-			var idQuizz = firstResult['idQuizz'];
-		} else {
-			console.log("Pas de données");
-		}
-		
-		connection.end();
-	});
-	
-	for(i = 1; i <= nombreQuestion; i++) {
-		
-		nomQuestion = req.body.questions[i].questionTitle;
-		nombreReponse = req.body.questions[i].nombreReponse;
-		
-		connection.query("INSERT INTO Question(nom, Quizz_idQuizz) VALUES ("+nomQuestion+", "+idQuizz+");",function(error, rows){         
-			if(error != null) {
-				resp.end("Query error:" + error);
-			} else {
-				resp.end("Success!");
-			}
-			
-			connection.end();
-		});
-
-		connection.query("SELECT * FROM Question ORDER BY idQestion desc LIMIT 1;", function select(err, rows, fields) {
-			if (err) {
-			  console.log(err);
-			  connection.end();
-			  return;
-			}
-		 
-			if (rows.length > 0) { 
-				var firstResult = rows[0];
-				var idQuestion = firstResult['idQuestion'];
-			} else {
-				console.log("Pas de données");
-			}
-			
-			connection.end();
-		});
-		
-		for(j = 1; j <= nombreReponse; j++) {
-			
-			proposition = req.body.question[i].questionAnswer[j];
-			estValide = req.body.question[i].correctAnswer[j];
-			
-			connection.query("INSERT INTO Proposition(proposition, estValide, Question_idQuestion) VALUES ("+proposition+", "+estValide+", "+idQuestion+");",function(error, rows){         
-				if(error != null) {
-					resp.end("Query error:" + error);
-				} else {
-					resp.end("Success!");
-				}
-				
-				connection.end();
-			});
-		}
-	}	
-});
-
 //config cors
 app.use(cors({
 	allowedOrigins : ['localhost'],
-	headers : ['Content-Type', 'Auhtorization']
+	headers : ['Content-Type', 'Authorization']
 }));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 
 //recuperer choix de matiere (en fonction des formations)
 app.get('/listeMatieres', function(req, res) {
-	userId = req.headers.Auhtorization; //recuperation de l'id
-	connection.query("select matiere.nom matiere.idMatiere from quizz, matiere where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte ="+userId+") and idMatiere =Matiere_idMatiere;", function(err, rows, fileds){
+	userId = req.headers.authorization; //recuperation de l'id
+	connection.query("select matiere.nom, matiere.idMatiere from quizz, matiere where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte ="+userId+") and idMatiere =Matiere_idMatiere;", function(err, rows, fileds){
 	if(!err)
 		res.status(200).json(rows);
 	else
@@ -166,7 +51,7 @@ app.get('/listeQuizz/:id_matiere', function(req, res) {
 
 app.param('id_matiere', function(req, res, next, id){
 	
-	userId = req.headers.Auhtorization; //recuperation de l'id
+	userId = req.headers.authorization; //recuperation de l'id
 	connection.query("select * from quizz where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte = "+userId+") and Matiere_idMatiere="+id+" ;", function(err, rows, fileds){
 	if(!err){
 		//"+userId+"
@@ -187,7 +72,7 @@ app.get('/quizz/:id_quizz', function(req,res){
 
 app.param('id_quizz', function(req, res, next, id){
 	
-connection.query("select * from question, proposition where Question_idQuestion=idQuestion and Quizz_idQuizz ="+id+";",function(err, rows, fileds){
+connection.query("select idQuestion, proposition, estValide, nom from proposition, question where Quizz_idQuizz = "+id+" and question.idQuestion= Question_idQuestion group by idQuestion, nom, proposition, estValide",function(err, rows, fileds){
 	if(!err){
 		
 		req.current_quizz = rows;
@@ -203,7 +88,7 @@ connection.query("select * from question, proposition where Question_idQuestion=
 // page inscription 
 
 app.get('/inscription/formation', function(req, res) {
-	userId = req.headers.Auhtorization; //recuperation de l'id
+	userId = req.headers.authorization; //recuperation de l'id
 	connection.query("select * from niveau_etude;", function(err, rows, fileds){
 	if(!err)
 		res.status(200).json(rows);
@@ -213,7 +98,7 @@ app.get('/inscription/formation', function(req, res) {
 });
 
 app.get('/inscription/etablissement', function(req, res) {
-	userId = req.headers.Auhtorization; //recuperation de l'id
+	userId = req.headers.authorization; //recuperation de l'id
 	connection.query("select * from etablissement;", function(err, rows, fileds){
 	if(!err)
 		res.status(200).json(rows);
@@ -222,8 +107,184 @@ app.get('/inscription/etablissement', function(req, res) {
   });	
 });
 
+//ajouter un quizz dans la base de données
+app.post('/ajouterQuizz', function (req, resp) {
+    var userId = req.headers.authorization;
+    var nomQuizz = req.body.title;
+    var nomMatiere = req.body.matiere.name;
+    var niveauEtude = req.body.year.name;
+    var nombreQuestion = req.body.nbOfQuestions;
+    var idMatiere = "";
+    var idNiveauEtude = "";
+    var idQuizz = "";
+    var idQuestion = "";
 
 
+    console.log(nomMatiere);
+
+
+    niveauEtudeQuery = function () {
+        console.log("Récupération du niveau d'étude");
+        connection.query("SELECT * FROM niveau_etude WHERE niveau = '" + niveauEtude + "';", function select(err, rows, fields) {
+            if (err) {
+                console.log(err);
+            }
+
+            if (rows.length > 0) {
+                var firstResult = rows[0];
+                idNiveauEtude = firstResult['idNiveau_etude'];
+                matiereQuery(function () {
+                    console.log("Insertion du quiz");
+                    connection.query("INSERT INTO quizz(nom, Compte_idCompte, Matiere_idMatiere, Niveau_etude_idNiveau_etude)\n VALUES('" + nomQuizz + "',\n " + userId + ",\n " + idMatiere + ",\n " + idNiveauEtude + ");", function (error, rows) {
+                        if (error != null) {
+                            console.log(error);
+                        } else {
+                            console.log("Success");
+                            searchIdQuuiz();
+                        }
+
+                    })
+                });
+            } else {
+                console.log("Pas de données nivieau d etude");
+            }
+
+        });
+    };
+
+    matiereQuery = function (callback) {
+        console.log("Récupération de l'ID de la matière");
+        connection.query("SELECT * FROM matiere WHERE nom = '" + nomMatiere + "';", function select(err, rows, fields) {
+            if (err) {
+                console.log(err);
+                connection.end();
+                return;
+            }
+
+            if (rows.length > 0) {
+                var firstResult = rows[0];
+                idMatiere = firstResult["idMatiere"];
+                callback();
+            } else {
+                console.log("Pas de données Matiere");
+            }
+
+        });
+
+    };
+
+    searchIdQuuiz = function () {
+        console.log("Récupération de l'ID du quiz ajouté");
+        connection.query("SELECT * FROM quizz ORDER BY idQuizz desc LIMIT 1;", function select(err, rows, fields) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+
+            if (rows.length > 0) {
+                var firstResult = rows[0];
+                idQuizz = firstResult['idQuizz'];
+                console.log("Insertion de la question 1" );
+                connection.query("INSERT INTO question(nom, Quizz_idQuizz) VALUES ('" + req.body.questions[1].questionTitle + "', " + idQuizz + ");", function (error, rows) {
+                    if (error != null) {
+
+                    }else{
+                        insertQuestion();
+                    }
+                });
+
+            } else {
+                console.log("Pas de données idQuizz");
+            }
+
+        });
+    };
+
+
+
+
+
+
+    insertQuestion = function () {
+
+        connection.query("SELECT * FROM question ORDER BY idQuestion desc LIMIT 1;", function select(err, rows, fields) {
+            if (err) {
+                console.log(err);
+            }
+            if (rows.length > 0) {
+                var firstResult = rows[0];
+                idQuestion = firstResult['idQuestion'];
+                console.log("ID question après insertion du premier" + idQuestion);
+                for (j = 1; j <= req.body.questions[1].nombreReponse; j++) {
+                    proposition = req.body.questions[1].questionAnswer[j];
+                    estValide = req.body.questions[1].correctAnswer[j];
+                    if(estValide === undefined){
+                        estValide = false;
+                    }
+                    console.log("Insertion des réponses de la question " + 1);
+                    connection.query("INSERT INTO proposition(proposition, estValide, Question_idQuestion) VALUES ('" + proposition + "', " + estValide + ", " + (idQuestion) + ");", function (error, rows) {
+                        if (error != null) {
+                            console.log(error);
+                        }
+                        resp.end("Success");
+                    });
+                }}
+            });
+
+        for (NoQuestion = 2; NoQuestion <= req.body.nbOfQuestions; NoQuestion++) {
+
+            nomQuestion = req.body.questions[NoQuestion].questionTitle;
+
+            insertQuestions = function (callback) {
+                console.log("Insertion de la question " + NoQuestion );
+                connection.query("INSERT INTO question(nom, Quizz_idQuizz) VALUES ('" + nomQuestion + "', " + idQuizz + ");", function (error, rows) {
+                    if (error != null) {
+
+                    }else{
+                        callback();
+                    }
+                })
+            };
+
+            var startingPoin = function (NoQuestion) {
+                insertQuestions(function () {
+                        for (j = 1; j <= req.body.questions[NoQuestion].nombreReponse; j++) {
+                            proposition = req.body.questions[NoQuestion].questionAnswer[j];
+                            estValide = req.body.questions[NoQuestion].correctAnswer[j];
+                            if(estValide === undefined){
+                                estValide = false;
+                            }
+                            console.log("Insertion des réponses de la question " + NoQuestion);
+                            connection.query("INSERT INTO proposition(proposition, estValide, Question_idQuestion) VALUES ('" + proposition + "', " + estValide + ", " + (idQuestion + NoQuestion - 1) + ");", function (error, rows) {
+                                if (error != null) {
+                                    console.log(error);
+                                }
+                            });
+                        }
+                });
+            };
+
+            startingPoin(NoQuestion);
+
+        }
+    };
+
+    niveauEtudeQuery();
+});
+
+
+//gestion des stats
+app.post('/resultats', function(req, res) {
+	userId = req.headers.authorization; //recuperation de l'id
+	connection.query("INSERT INTO resultat (nbQuestionBonne, nbQuestionTotal, Compte_idCompte, Quizz_idQuizz) VALUES ("+req.body.bonneReponse+","+req.body.total+","+req.headers.authorization+","+req.body.idQuizz+")", function(err, rows, fileds){
+	if(!err)
+		res.status(200).json(rows);
+	else
+		res.status(404).json("error");	
+  });	
+});
+
+//retourner les stats
 
 /*app.post('/inscription', function(req,res){
 	var etablissement = "select idEtablissement from etablissement where nom ="+req.body.etablissement;

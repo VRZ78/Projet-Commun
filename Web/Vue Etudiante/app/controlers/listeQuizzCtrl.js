@@ -1,8 +1,8 @@
 var listeQuizzCtrl = angular.module('listeQuizzCtrl', []);
-listeQuizzCtrl.controller('listeQuizzCtrl', function ($scope,$http) {
-    console.log("listeQuizzCtrl");
+listeQuizzCtrl.controller('listeQuizzCtrl', function ($scope,$http,$routeParams) {
+    console.log($routeParams.idMatiere);
 
-    $http.get('app/requetes/listequizz.json').then(function(response){
+    $http.get('http://localhost:8080/listeQuizz/'+$routeParams.idMatiere).then(function(response){
         $scope.listeQuizz=response.data;
         console.log($scope.listeQuizz);
     },function(reason){

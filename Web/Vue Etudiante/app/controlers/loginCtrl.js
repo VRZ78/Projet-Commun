@@ -15,6 +15,8 @@ loginController.controller('loginCtrl', function ($scope, $http, sharedStorageSe
         console.log(reason);
     });
 
+
+
     $scope.submit = function () {
         console.log($scope.nom);
         $scope.temp = sharedStorageService.get();
