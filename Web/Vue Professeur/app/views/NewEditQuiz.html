@@ -58,13 +58,13 @@
                 <!--Domaine et matière-->
                 <div flex-container="row">
                     <div flex-item class="ml">
-                        <lx-select ng-model="quiz.domaine" placeholder="Domaine" choices="domaine"
+                        <lx-select ng-model="quiz.year" placeholder="Niveau d'étude" choices="domaine"
                                    floating-label>
                             <lx-select-selected>
-                                {{ $selected.name}}
+                                {{ $selected.niveau}}
                             </lx-select-selected>
                             <lx-select-choices>
-                                {{ $choice.name }}
+                                {{ $choice.niveau }}
                             </lx-select-choices>
                             <span>{{setSelectedDomaine($selected.name)}}</span>
                         </lx-select>
@@ -73,11 +73,11 @@
                         <lx-select ng-model="quiz.matiere" placeholder="Matière" choices="matiere"
                                    floating-label>
                             <lx-select-selected>
-                                {{ $selected.name }}
+                                {{ $selected.nom }}
                             </lx-select-selected>
 
                             <lx-select-choices>
-                                {{ $choice.name }}
+                                {{ $choice.nom }}
                             </lx-select-choices>
                             <span>{{setSelectedMatiere($selected.name)}}</span>
                         </lx-select>
@@ -168,11 +168,11 @@
             <!--Bouton Envoyer -->
             <div flex-container="column" flex-align="space-between center">
                 <div flex-item class="mt mb+">
-                    <a href="#/welcome">
+                    <!--<a href="#/welcome">-->
                         <button class="btn btn--m btn--orange btn--raised" ng-click="confirmCreation()" ng-disabled="isFormNotFilledCorrectly" ng-mouseover="formVerification()">
                             <span>Envoyer</span>
                         </button>
-                    </a>
+                    <!--</a>-->
                 </div>
             </div>
 

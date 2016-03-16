@@ -98,18 +98,27 @@
                                 <input type="text" ng-model="inscProf.confirmMail">
                             </lx-text-field>
                             <lx-date-picker model="inscProf.birthday" label="Pick a date" locale="fr" fixed-label="true" icon="calendar"></lx-date-picker>
-                            <lx-text-field label="Ecole ou université" fixed-label="true" icon="school">
-                                <input type="text" ng-model="inscProf.school">
-                            </lx-text-field>
                             <div flex-container="row">
                                 <i flex-item class="mdi mdi-school mdi-24px mt+ ml"></i>
+                                <lx-select flex-item="11" class="p- mt ml+++" icon="calendar" ng-model="inscProf.school" lx-multiple="true" placeholder="Etablissement" choices="etablissements"
+                                           fixed-label="true">
+                                    <lx-select-selected>
+                                        {{ $selected.nom}}
+                                    </lx-select-selected>
+                                    <lx-select-choices>
+                                        {{ $choice.nom }}
+                                    </lx-select-choices>
+                                </lx-select>
+                            </div>
+                            <div flex-container="row">
+                                <i flex-item class="mdi mdi-trending-up mdi-24px mt+ ml"></i>
                             <lx-select flex-item="11" class="p- mt ml+++ mb" icon="calendar" ng-model="inscProf.year" lx-multiple="true" placeholder="Niveau d'étude" choices="year"
                                        fixed-label="true">
                                 <lx-select-selected>
-                                    {{ $selected.name}}
+                                    {{ $selected.niveau}}
                                 </lx-select-selected>
                                 <lx-select-choices>
-                                    {{ $choice.name }}
+                                    {{ $choice.niveau }}
                                 </lx-select-choices>
                             </lx-select>
                             </div>

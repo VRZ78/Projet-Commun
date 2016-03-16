@@ -5,8 +5,16 @@
 angular.module('RevisatorProfApp')
     .controller('NewEditQuizController', function ($scope, $http, LxNotificationService) {
 
-        $http.get('data/quizlist.json').then(function (response) {
-            $scope.quizes = response.data;
+        $http.get('http://localhost:8080/listeMatiereProf').then(function (response) {
+            $scope.matiere = response.data;
+            console.log($scope.reponse);
+        }, function (reason) {
+            console.log(reason);
+        });
+
+        $http.get('http://localhost:8080/inscription/formation').then(function (response) {
+           $scope.domaine = response.data;
+            console.log($scope.reponse);
         }, function (reason) {
             console.log(reason);
         });
@@ -15,27 +23,11 @@ angular.module('RevisatorProfApp')
         $scope.nom = 'Nom Prenom';
 
         // Liste des domaines
-        $scope.domaine = [
-            {name: 'Economie'},
-            {name: 'Histoire'},
-            {name: 'Philosophie'},
-            {name: 'Informatique'},
-            {name: 'Sociologie'},
-            {name: 'Médecine'},
-            {name: 'Mathématiques'},
-            {name: 'Arts'}
-        ];
+        $scope.domaine = "";
 
         // Liste des matières
-        $scope.matiere = [
-            {name: 'Base de données'},
-            {name: 'Socio 1'},
-            {name: 'Programmation'},
-            {name: 'Fiscalité des entreprises'},
-            {name: 'Finance de marché'},
-            {name: 'Médecine'},
-            {name: 'Mathématiques pour l informatique'}
-        ];
+        $scope.matiere = "";
+
 
         // Permet d'enregistrer le domaine sélectionné
         $scope.selectedDomaine = '';
@@ -97,15 +89,16 @@ angular.module('RevisatorProfApp')
 
         // Fonction appelée lors de l'appui sur le bouton de création du quiz
         $scope.confirmCreation = function () {
-            if ($scope.hasSendQuizButtonBeenClicked != true) {
+                for(i = 1; i <= $scope.numberOfQuestions; i++){
+                    $scope.quiz.questions[i].nombreReponse = $scope.nbOfAnswer[i];
+                }
                 $scope.quiz.nbOfQuestions = $scope.numberOfQuestions;
-                $http.post('http://localhost:8080/sendQuiz', JSON.stringify($scope.quiz)).then(function (response) {
+                $http.post('http://localhost:8080/ajouterQuizz', JSON.stringify($scope.quiz)).then(function (response) {
                     LxNotificationService.success('Votre quiz a bien été créé');
-                    $scope.hasSendQuizButtonBeenClicked = true;
+              //      $scope.hasSendQuizButtonBeenClicked = true;
                 }, function () {
                     LxNotificationService.error('Impossible de contacter le serveur');
                 });
-            }
         };
 
         $scope.quiz = {
@@ -113,9 +106,10 @@ angular.module('RevisatorProfApp')
             questions: [{
                 questionTitle: "",
                 questionAnswer: "",
-                correctAnswer: ""
+                correctAnswer: "",
+                nombreReponse: ""
             }],
-            domaine: "",
+            year : "",
             matiere: "",
             nbOfQuestions: ""
     };
@@ -138,13 +132,13 @@ $scope.isFormNotFilledCorrectly = '';
             }
 
             // Domaine
-            if ($scope.selectedDomaine === '' || $scope.selectedDomaine === undefined) {
+            if ($scope.quiz.year === '' || $scope.quiz.year === undefined) {
                 LxNotificationService.error('\n- Le domaine du quiz n\'est pas renseigné');
                 isSometingWrong = true;
             }
 
             // Matière
-            if ($scope.selectedMatiere === '' || $scope.selectedMatiere === undefined) {
+            if ($scope.quiz.matiere === '' || $scope.quiz.matiere === undefined) {
                 LxNotificationService.error('\n- La matière du quiz n\'est pas renseigné');
                 isSometingWrong = true;
             }
@@ -222,6 +216,6 @@ $scope.isFormNotFilledCorrectly = '';
 
         };
 
-        $scope.hasSendQuizButtonBeenClicked = false;
+  //      $scope.hasSendQuizButtonBeenClicked = false;
 
     });

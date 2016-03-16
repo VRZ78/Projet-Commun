@@ -4,11 +4,6 @@
 angular.module('RevisatorProfApp')
     .controller('LoginController', function ($scope, $http, LxNotificationService) {
 
-        $http.get('http://localhost:8080/listeMatieres').then(function (response) {
-            $scope.reponse = response.data;
-        }, function (reason) {
-            console.log(reason);
-        });
 
         // Fonction appelé lors du click sur le bouton de création de compte
         $scope.accountConfirmCreation = function (quiz) {
@@ -31,26 +26,36 @@ angular.module('RevisatorProfApp')
             });
         };
 
+        $http.get('http://localhost:8080/inscription/etablissement').then(function (response) {
+            $scope.etablissements = response.data;
+            console.log($scope.reponse);
+        }, function (reason) {
+            console.log(reason);
+        });
+
+        $http.get('http://localhost:8080/inscription/formation').then(function (response) {
+            $scope.year = response.data;
+            console.log($scope.reponse);
+        }, function (reason) {
+            console.log(reason);
+        });
+
+        $scope.etablissements = "";
+
         $scope.hasAccountCreationButtonBeenClicked = false;
 
         // Liste des choix pour le select du niveau d'étude
-        $scope.year = [
-            {name: 'L1'},
-            {name: 'L2'},
-            {name: 'L3'},
-            {name: 'M1'},
-            {name: 'M2'},
-            {name: 'Doctorat'}
-        ];
+        $scope.year = "";
 
         // ng-models
         $scope.inscProf = {
             username: "",
             password: "",
             mail: "",
-            school: "",
+            schoo1: "",
             birthday: undefined,
-            year: ""
+            year: "",
+            typeCompte: 2
         };
 
         $scope.connect = {
