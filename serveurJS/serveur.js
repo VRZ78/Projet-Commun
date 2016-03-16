@@ -107,6 +107,30 @@ app.get('/inscription/etablissement', function(req, res) {
   });	
 });
 
+//fin page inscription
+
+//recuperation des quizz du prof
+app.get('/listeQuizzProf',function(req,res){
+	userId = req.headers.authorization; //recuperation de l'id
+	connection.query("select * from Quizz where Compte_idCompte="+userId+";", function(err, rows, fileds){
+	if(!err)
+		res.status(200).json(rows);
+	else
+		res.status(404).json("error");	
+  });	
+});
+
+//ajout de quizz
+app.get('/listeMatiereProf',function(req,res){
+	
+	connection.query("select nom from matiere;", function(err, rows, fileds){
+	if(!err)
+		res.status(200).json(rows);
+	else
+		res.status(404).json("error");	
+  });	
+});
+
 //ajouter un quizz dans la base de données
 app.post('/ajouterQuizz', function (req, resp) {
     var userId = req.headers.authorization;
@@ -282,6 +306,16 @@ app.post('/resultats', function(req, res) {
 	else
 		res.status(404).json("error");	
   });	
+});
+
+app.get('/statDetaillé',function(req, res){
+	userId = req.headers.authorization;
+	connection.query("select * from resultat where Compte_idCompte="+userId+";",function(err, rows, fields){
+		if(!err)
+			res.status(200).json(rows);
+		else
+			res.status(404).json("error");
+	});
 });
 
 //retourner les stats
