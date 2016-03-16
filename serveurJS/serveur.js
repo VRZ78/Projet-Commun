@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 //recuperer choix de matiere (en fonction des formations)
 app.get('/listeMatieres', function(req, res) {
-	userId = req.headers.Auhtorization; //recuperation de l'id
+	userId = req.headers.authorization; //recuperation de l'id
 	connection.query("select matiere.nom, matiere.idMatiere from quizz, matiere where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte ="+userId+") and idMatiere =Matiere_idMatiere;", function(err, rows, fileds){
 	if(!err)
 		res.status(200).json(rows);
@@ -51,7 +51,7 @@ app.get('/listeQuizz/:id_matiere', function(req, res) {
 
 app.param('id_matiere', function(req, res, next, id){
 	
-	userId = req.headers.Auhtorization; //recuperation de l'id
+	userId = req.headers.authorization; //recuperation de l'id
 	connection.query("select * from quizz where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte = "+userId+") and Matiere_idMatiere="+id+" ;", function(err, rows, fileds){
 	if(!err){
 		//"+userId+"
@@ -88,7 +88,7 @@ connection.query("select idQuestion, proposition, estValide, nom from propositio
 // page inscription 
 
 app.get('/inscription/formation', function(req, res) {
-	userId = req.headers.Auhtorization; //recuperation de l'id
+	userId = req.headers.authorization; //recuperation de l'id
 	connection.query("select * from niveau_etude;", function(err, rows, fileds){
 	if(!err)
 		res.status(200).json(rows);
@@ -98,7 +98,7 @@ app.get('/inscription/formation', function(req, res) {
 });
 
 app.get('/inscription/etablissement', function(req, res) {
-	userId = req.headers.Auhtorization; //recuperation de l'id
+	userId = req.headers.authorization; //recuperation de l'id
 	connection.query("select * from etablissement;", function(err, rows, fileds){
 	if(!err)
 		res.status(200).json(rows);
@@ -275,8 +275,8 @@ app.post('/ajouterQuizz', function (req, resp) {
 
 //gestion des stats
 app.post('/resultats', function(req, res) {
-	userId = req.headers.Auhtorization; //recuperation de l'id
-	connection.query("INSERT INTO resultat (nbQuestionBonne, nbQuestionTotal, Compte_idCompte, Quizz_idQuizz) VALUES ("+req.body.bonneReponse+","+req.body.total+","+req.headers.Auhtorization+","+req.body.idQuizz+")", function(err, rows, fileds){
+	userId = req.headers.authorization; //recuperation de l'id
+	connection.query("INSERT INTO resultat (nbQuestionBonne, nbQuestionTotal, Compte_idCompte, Quizz_idQuizz) VALUES ("+req.body.bonneReponse+","+req.body.total+","+req.headers.authorization+","+req.body.idQuizz+")", function(err, rows, fileds){
 	if(!err)
 		res.status(200).json(rows);
 	else
