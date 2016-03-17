@@ -330,10 +330,18 @@ app.get('/statDetaillé',function(req, res){
 	 		console.log("erreur lors de l'ajout");
 	 });
 });
+*/
 
 app.post('/vuep/inscription', function(req,res){
 	//changer type par 2...;
-}); */
+	var etablissement = "select idEtablissement from etablissement where nom ="+req.body.school.etablissement; 
+	connection.query("INSERT INTO `compte`(`username`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`, `facebookid`) VALUES ("+req.body.username+","+req.body.nom+","+req.body.prenom+","+req.body.birthday+","+req.body.password+",2,"+req.body.school.etablissement+","+req.body.year.idNiveau_etude+")",function(err, rows, fields){
+		if(!err)
+			res.status(200);
+		else
+			res.status(404).json("erreur inscription prof");
+	});
+}); 
 
 //
 app.listen(8080);
