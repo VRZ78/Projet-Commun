@@ -29,5 +29,5 @@ angular.module('RevisatorProfApp')
                 LxNotificationService.error('Impossible de contacter le serveur');
             });
         };
-        
+
     });

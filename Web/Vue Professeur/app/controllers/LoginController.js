@@ -43,6 +43,11 @@ angular.module('RevisatorProfApp')
             console.log(reason);
         });
 
+
+        $scope.forgotPass = function(){
+            LxNotificationService.error('Cette fonction n\' est pas encore implémentée');
+        };
+
         $scope.etablissements = "";
 
         $scope.hasAccountCreationButtonBeenClicked = false;

@@ -3,7 +3,7 @@
  */
 
 angular.module('RevisatorProfApp')
-    .controller('NewEditQuizController', function ($scope, $http, LxNotificationService) {
+    .controller('NewEditQuizController', function ($scope, $http, $location, LxNotificationService) {
 
         $http.get('http://localhost:8080/listeMatiereProf').then(function (response) {
             $scope.matiere = response.data;
@@ -13,7 +13,7 @@ angular.module('RevisatorProfApp')
         });
 
         $http.get('http://localhost:8080/inscription/formation').then(function (response) {
-           $scope.domaine = response.data;
+            $scope.domaine = response.data;
             console.log($scope.reponse);
         }, function (reason) {
             console.log(reason);
@@ -89,16 +89,21 @@ angular.module('RevisatorProfApp')
 
         // Fonction appelée lors de l'appui sur le bouton de création du quiz
         $scope.confirmCreation = function () {
-                for(i = 1; i <= $scope.numberOfQuestions; i++){
+
+            $scope.formVerification();
+            if ($scope.isFormNotFilledCorrectly === false) {
+                for (i = 1; i <= $scope.numberOfQuestions; i++) {
                     $scope.quiz.questions[i].nombreReponse = $scope.nbOfAnswer[i];
                 }
                 $scope.quiz.nbOfQuestions = $scope.numberOfQuestions;
                 $http.post('http://localhost:8080/ajouterQuizz', JSON.stringify($scope.quiz)).then(function (response) {
                     LxNotificationService.success('Votre quiz a bien été créé');
-              //      $scope.hasSendQuizButtonBeenClicked = true;
+                    $location.path("/welcome");
+
                 }, function () {
                     LxNotificationService.error('Impossible de contacter le serveur');
                 });
+            }
         };
 
         $scope.quiz = {
@@ -109,14 +114,14 @@ angular.module('RevisatorProfApp')
                 correctAnswer: "",
                 nombreReponse: ""
             }],
-            year : "",
+            year: "",
             matiere: "",
             nbOfQuestions: ""
-    };
+        };
 
 
 // Variable de désactivation / activation du bouton envoyé
-$scope.isFormNotFilledCorrectly = '';
+        $scope.isFormNotFilledCorrectly = '';
 
         // Vérification du formulaire
         $scope.formVerification = function () {
@@ -185,18 +190,18 @@ $scope.isFormNotFilledCorrectly = '';
                             }
                         }
                         // Réponses correctes
-                        if (angular.isUndefined($scope.quiz.questions[i].correctAnswer)){
-                           if(j === $scope.nbOfAnswer[i]) {
-                               LxNotificationService.error('\n- La question ' + i + ' n\' a pas de bonne réponse');
-                               isSometingWrong = true;
-                           }
+                        if (angular.isUndefined($scope.quiz.questions[i].correctAnswer)) {
+                            if (j === $scope.nbOfAnswer[i]) {
+                                LxNotificationService.error('\n- La question ' + i + ' n\' a pas de bonne réponse');
+                                isSometingWrong = true;
+                            }
 
                         }
                         else {
-                            if($scope.quiz.questions[i].correctAnswer[j] === true){
+                            if ($scope.quiz.questions[i].correctAnswer[j] === true) {
                                 areCorrectAnswer = true;
                             }
-                            if(areCorrectAnswer === false && j === $scope.nbOfAnswer[i]){
+                            if (areCorrectAnswer === false && j === $scope.nbOfAnswer[i]) {
                                 LxNotificationService.error('\n- La question ' + i + ' n\' a pas de bonne réponse');
                                 isSometingWrong = true;
                             }
@@ -216,6 +221,6 @@ $scope.isFormNotFilledCorrectly = '';
 
         };
 
-  //      $scope.hasSendQuizButtonBeenClicked = false;
+        //      $scope.hasSendQuizButtonBeenClicked = false;
 
     });
