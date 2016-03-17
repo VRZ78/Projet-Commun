@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 //recuperer choix de matiere (en fonction des formations)
 app.get('/listeMatieres', function(req, res) {
 	userId = req.headers.authorization; //recuperation de l'id
-	connection.query("select matiere.nom, matiere.idMatiere from quizz, matiere where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte ="+userId+") and idMatiere =Matiere_idMatiere;", function(err, rows, fileds){
+	connection.query("select matiere.nom, matiere.idMatiere from quizz, matiere where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where id="+userId+") and idMatiere =Matiere_idMatiere;", function(err, rows, fileds){
 	if(!err)
 		res.status(200).json(rows);
 	else
@@ -52,7 +52,7 @@ app.get('/listeQuizz/:id_matiere', function(req, res) {
 app.param('id_matiere', function(req, res, next, id){
 	
 	userId = req.headers.authorization; //recuperation de l'id
-	connection.query("select * from quizz where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where idCompte = "+userId+") and Matiere_idMatiere="+id+" ;", function(err, rows, fileds){
+	connection.query("select * from quizz where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where id= "+userId+") and Matiere_idMatiere="+id+" ;", function(err, rows, fileds){
 	if(!err){
 		//"+userId+"
 		req.currents_quizz = rows;
@@ -134,9 +134,10 @@ app.get('/listeMatiereProf',function(req,res){
 //ajouter un quizz dans la base de données
 app.post('/ajouterQuizz', function (req, resp) {
     var userId = req.headers.authorization;
+    console.log(userId);
     var nomQuizz = req.body.title;
-    var nomMatiere = req.body.matiere.name;
-    var niveauEtude = req.body.year.name;
+    var nomMatiere = req.body.matiere.nom;
+    var niveauEtude = req.body.year.niveau;
     var nombreQuestion = req.body.nbOfQuestions;
     var idMatiere = "";
     var idNiveauEtude = "";
@@ -208,11 +209,11 @@ app.post('/ajouterQuizz', function (req, resp) {
             if (rows.length > 0) {
                 var firstResult = rows[0];
                 idQuizz = firstResult['idQuizz'];
-                console.log("Insertion de la question 1" );
+                console.log("Insertion de la question 1");
                 connection.query("INSERT INTO question(nom, Quizz_idQuizz) VALUES ('" + req.body.questions[1].questionTitle + "', " + idQuizz + ");", function (error, rows) {
                     if (error != null) {
 
-                    }else{
+                    } else {
                         insertQuestion();
                     }
                 });
@@ -223,10 +224,6 @@ app.post('/ajouterQuizz', function (req, resp) {
 
         });
     };
-
-
-
-
 
 
     insertQuestion = function () {
@@ -242,7 +239,7 @@ app.post('/ajouterQuizz', function (req, resp) {
                 for (j = 1; j <= req.body.questions[1].nombreReponse; j++) {
                     proposition = req.body.questions[1].questionAnswer[j];
                     estValide = req.body.questions[1].correctAnswer[j];
-                    if(estValide === undefined){
+                    if (estValide === undefined) {
                         estValide = false;
                     }
                     console.log("Insertion des réponses de la question " + 1);
@@ -252,19 +249,20 @@ app.post('/ajouterQuizz', function (req, resp) {
                         }
                         resp.end("Success");
                     });
-                }}
-            });
+                }
+            }
+        });
 
         for (NoQuestion = 2; NoQuestion <= req.body.nbOfQuestions; NoQuestion++) {
 
             nomQuestion = req.body.questions[NoQuestion].questionTitle;
 
             insertQuestions = function (callback) {
-                console.log("Insertion de la question " + NoQuestion );
+                console.log("Insertion de la question " + NoQuestion);
                 connection.query("INSERT INTO question(nom, Quizz_idQuizz) VALUES ('" + nomQuestion + "', " + idQuizz + ");", function (error, rows) {
                     if (error != null) {
 
-                    }else{
+                    } else {
                         callback();
                     }
                 })
@@ -272,19 +270,19 @@ app.post('/ajouterQuizz', function (req, resp) {
 
             var startingPoin = function (NoQuestion) {
                 insertQuestions(function () {
-                        for (j = 1; j <= req.body.questions[NoQuestion].nombreReponse; j++) {
-                            proposition = req.body.questions[NoQuestion].questionAnswer[j];
-                            estValide = req.body.questions[NoQuestion].correctAnswer[j];
-                            if(estValide === undefined){
-                                estValide = false;
-                            }
-                            console.log("Insertion des réponses de la question " + NoQuestion);
-                            connection.query("INSERT INTO proposition(proposition, estValide, Question_idQuestion) VALUES ('" + proposition + "', " + estValide + ", " + (idQuestion + NoQuestion - 1) + ");", function (error, rows) {
-                                if (error != null) {
-                                    console.log(error);
-                                }
-                            });
+                    for (j = 1; j <= req.body.questions[NoQuestion].nombreReponse; j++) {
+                        proposition = req.body.questions[NoQuestion].questionAnswer[j];
+                        estValide = req.body.questions[NoQuestion].correctAnswer[j];
+                        if (estValide === undefined) {
+                            estValide = false;
                         }
+                        console.log("Insertion des réponses de la question " + NoQuestion);
+                        connection.query("INSERT INTO proposition(proposition, estValide, Question_idQuestion) VALUES ('" + proposition + "', " + estValide + ", " + (idQuestion + NoQuestion - 1) + ");", function (error, rows) {
+                            if (error != null) {
+                                console.log(error);
+                            }
+                        });
+                    }
                 });
             };
 
@@ -308,9 +306,11 @@ app.post('/resultats', function(req, res) {
   });	
 });
 
+
+//retourner les stats
 app.get('/statDetaillé',function(req, res){
 	userId = req.headers.authorization;
-	connection.query("select * from resultat where Compte_idCompte="+userId+";",function(err, rows, fields){
+	connection.query("SELECT * FROM resultat, quizz, matiere where resultat.Compte_idCompte ="+userId+" and quizz.idQuizz = Quizz_idQuizz and matiere.idMatiere = Matiere_idMatiere;",function(err, rows, fields){
 		if(!err)
 			res.status(200).json(rows);
 		else
@@ -318,7 +318,7 @@ app.get('/statDetaillé',function(req, res){
 	});
 });
 
-//retourner les stats
+
 
 /*app.post('/inscription', function(req,res){
 	var etablissement = "select idEtablissement from etablissement where nom ="+req.body.etablissement;
@@ -333,15 +333,30 @@ app.get('/statDetaillé',function(req, res){
 */
 
 app.post('/vuep/inscription', function(req,res){
-	//changer type par 2...;
-	var etablissement = "select idEtablissement from etablissement where nom ="+req.body.school.etablissement; 
-	connection.query("INSERT INTO `compte`(`username`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`, `facebookid`) VALUES ("+req.body.username+","+req.body.nom+","+req.body.prenom+","+req.body.birthday+","+req.body.password+",2,"+req.body.school.etablissement+","+req.body.year.idNiveau_etude+")",function(err, rows, fields){
-		if(!err)
-			res.status(200);
-		else
-			res.status(404).json("erreur inscription prof");
-	});
-}); 
+    //changer type par 2...;
+    connection.query("INSERT INTO `compte`(`username`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`) VALUES ('"+req.body.username+"','"+req.body.nom+"','"+req.body.prenom+"','"+req.body.birthday+"','"+req.body.password+"',2,"+req.body.school.idEtablissement+","+req.body.year.idNiveau_etude+")",function(err, rows, fields){
+       //console.log("INSERT INTO `compte`(`username`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`) VALUES ("+req.body.username+","+req.body.nom+","+req.body.prenom+","+req.body.birthday+","+req.body.password+",2,"+req.body.school.idEtablissement+","+req.body.year.idNiveau_etude+"");
+        if(!err)
+            res.status(200).send();
+        else {
+            console.log(err);
+            res.status(404).json("erreur inscription prof");
+        }
+    });
+});
+
+app.post('/inscription', function(req,res){
+
+    connection.query("INSERT INTO `compte`(`username`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`) VALUES ('"+req.body.username+"','"+req.body.nom+"','"+req.body.prenom+"','"+req.body.birthday+"','"+req.body.password+"',1,"+req.body.school.idEtablissement+","+req.body.year.idNiveau_etude+")",function(err, rows, fields){
+       //console.log("INSERT INTO `compte`(`username`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`) VALUES ("+req.body.username+","+req.body.nom+","+req.body.prenom+","+req.body.birthday+","+req.body.password+",1,"+req.body.school.idEtablissement+","+req.body.year.idNiveau_etude+"");
+        if(!err)
+            res.status(200).send();
+        else {
+            console.log(err);
+            res.status(404).json("erreur inscription prof");
+        }
+    });
+});
 
 //
 app.listen(8080);
