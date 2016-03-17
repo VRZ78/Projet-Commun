@@ -1,7 +1,7 @@
 //inscriptionCtrl
 
 var inscriptionCtrl = angular.module('inscriptionCtrl', []);
-inscriptionCtrl.controller('inscriptionCtrl', function ($scope, $http, LxNotificationService) {
+inscriptionCtrl.controller('inscriptionCtrl', function ($scope, $http,$filter, LxNotificationService) {
     console.log("inscriptionCtrl");
 
 
@@ -19,11 +19,13 @@ inscriptionCtrl.controller('inscriptionCtrl', function ($scope, $http, LxNotific
     // ng-models
     $scope.inscEleve = {
         username: "",
+        nom: "",
+        prenom: "",
         password: "",
         mail: "",
-        school: "",
         birthday: undefined,
-        year: ""
+        year: "",
+        typeCompte: 1
     };
 
     // Vérification du formulaire d'inscritpion
@@ -164,7 +166,8 @@ inscriptionCtrl.controller('inscriptionCtrl', function ($scope, $http, LxNotific
 
     // Fonction appelé lors du click sur le bouton de création de compte
     $scope.accountConfirmCreation = function (quiz) {
-        $http.post('http://localhost:8080/signup', JSON.stringify($scope.testInscripiton)).then(function (response) {
+        $http.post('http://localhost:8080/inscription', JSON.stringify($scope.inscEleve)).then(function (response) {
+            $scope.inscEleve.birthday = $filter('date')($scope.inscEleve.birthday, "yyyy-MM-dd");
             LxNotificationService.success('Votre compte a bien été créé. Merci de vérifier vos mails et de cliquer sur le lien d activation');
             console.log(response);
             $scope.hasAccountCreationButtonBeenClicked = true;

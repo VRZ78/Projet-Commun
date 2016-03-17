@@ -13,9 +13,12 @@ listeMatiereCtrl.controller('listeMatiereCtrl', function ($scope,$http) {
     });
     */
 
+
     $http.get('http://localhost:8080/listeMatieres').then(function(response){
         $scope.matieres=response.data;
         console.log($scope.matieres);
+
+
     },function(reason){
         console.log(reason);
     });

@@ -23,6 +23,7 @@ loginController.controller('loginCtrl', function ($scope, $http, sharedStorageSe
     $http.post('http://localhost:8080/login', JSON.stringify($scope.login)).then(function (response) {
         LxNotificationService.success('connexion');
     }, function () {
+        console.log('http://localhost:8080/login', JSON.stringify($scope.login));
         LxNotificationService.error('Impossible de contacter le serveur');
     });
 
