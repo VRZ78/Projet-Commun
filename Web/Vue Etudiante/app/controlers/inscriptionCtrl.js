@@ -16,7 +16,6 @@ inscriptionCtrl.controller('inscriptionCtrl', function ($scope, $http, LxNotific
     ];
 
 
-
     // ng-models
     $scope.inscEleve = {
         username: "",
@@ -28,53 +27,53 @@ inscriptionCtrl.controller('inscriptionCtrl', function ($scope, $http, LxNotific
     };
 
     // Vérification du formulaire d'inscritpion
-    $scope.isCreateButtonDisabled = function(){
+    $scope.isCreateButtonDisabled = function () {
         return false;
-    } ;
-     /* function () {
-        var isCorrect = true;
-        if ($scope.inscEleve.username === "") {
-            isCorrect = false;
-            return true;
-        }
-        if ($scope.inscEleve.password === "") {
-            isCorrect = false;
-            return true;
-        }
-        if ($scope.inscEleve.confirmPassword === "") {
-            isCorrect = false;
-            return true;
-        }
-        if ($scope.inscEleve.mail === "") {
-            isCorrect = false;
-            return true;
-        }
-        if ($scope.inscEleve.confirmMail === "") {
-            isCorrect = false;
-            return true;
-        }
-        if ($scope.inscEleve.birthday === "") {
-            isCorrect = false;
-            return true;
-        }
-        if ($scope.inscEleve.school === "") {
-            isCorrect = false;
-            return true;
-        }
-        if ($scope.inscEleve.year === "") {
-            isCorrect = false;
-            return true;
-        }
-        if ($scope.inscEleve.password != $scope.inscEleve.confirmPassword) {
-            isCorrect = false;
-            return true;
-        }
-        if ($scope.inscEleve.mail != $scope.inscEleve.confirmMail) {
-            isCorrect = false;
-            return true;
-        }
-    };*/
-
+    };
+    /* function () {
+     var isCorrect = true;
+     if ($scope.inscEleve.username === "") {
+     isCorrect = false;
+     return true;
+     }
+     if ($scope.inscEleve.password === "") {
+     isCorrect = false;
+     return true;
+     }
+     if ($scope.inscEleve.confirmPassword === "") {
+     isCorrect = false;
+     return true;
+     }
+     if ($scope.inscEleve.mail === "") {
+     isCorrect = false;
+     return true;
+     }
+     if ($scope.inscEleve.confirmMail === "") {
+     isCorrect = false;
+     return true;
+     }
+     if ($scope.inscEleve.birthday === "") {
+     isCorrect = false;
+     return true;
+     }
+     if ($scope.inscEleve.school === "") {
+     isCorrect = false;
+     return true;
+     }
+     if ($scope.inscEleve.year === "") {
+     isCorrect = false;
+     return true;
+     }
+     if ($scope.inscEleve.password != $scope.inscEleve.confirmPassword) {
+     isCorrect = false;
+     return true;
+     }
+     if ($scope.inscEleve.mail != $scope.inscEleve.confirmMail) {
+     isCorrect = false;
+     return true;
+     }
+     };*/
+/*
     $scope.champs = function () {
         var isCorrect = true;
         if ($scope.inscEleve.username === "") {
@@ -118,9 +117,9 @@ inscriptionCtrl.controller('inscriptionCtrl', function ($scope, $http, LxNotific
             return true;
         }
     };
-
+*/
     // Vérification mots de passe et adresses mails identiques
-    $scope.onMouseoverCreationButton = function () {
+  /*  $scope.onMouseoverCreationButton = function () {
         var isSomethingWrong = false;
         if ($scope.inscEleve.password != $scope.inscEleve.confirmPassword && $scope.inscEleve.password != "" && $scope.inscEleve.confirmPassword != "") {
             LxNotificationService.error("Les mots de passe ne sont pas identiques.");
@@ -137,7 +136,8 @@ inscriptionCtrl.controller('inscriptionCtrl', function ($scope, $http, LxNotific
             return false;
         }
     };
-
+*/
+    /*
     var verifier = function () {
         var isSomethingWrong = false;
         if ($scope.inscEleve.password != $scope.inscEleve.confirmPassword && $scope.inscEleve.password != "" && $scope.inscEleve.confirmPassword != "") {
@@ -155,20 +155,33 @@ inscriptionCtrl.controller('inscriptionCtrl', function ($scope, $http, LxNotific
             return false;
         }
     };
+*/
+
+    $scope.testInscripiton = {
+        "username": "test1",
+        "password": "test"
+    };
 
     // Fonction appelé lors du click sur le bouton de création de compte
     $scope.accountConfirmCreation = function (quiz) {
-        verifier();
+        $http.post('http://localhost:8080/signup', JSON.stringify($scope.testInscripiton)).then(function (response) {
+            LxNotificationService.success('Votre compte a bien été créé. Merci de vérifier vos mails et de cliquer sur le lien d activation');
+            console.log(response);
+            $scope.hasAccountCreationButtonBeenClicked = true;
+        }, function () {
+            LxNotificationService.error('Impossible de contacter le serveur');
+        });
+      /*  verifier();
         if ($scope.hasAccountCreationButtonBeenClicked != true) {
-            $http.post('http://localhost:8080/inscProf', JSON.stringify($scope.inscProf)).then(function (response) {
+            $http.post('http://localhost:8080/signup', JSON.stringify($scope.testInscripiton)).then(function (response) {
                 LxNotificationService.success('Votre compte a bien été créé. Merci de vérifier vos mails et de cliquer sur le lien d activation');
+                console.log(response);
                 $scope.hasAccountCreationButtonBeenClicked = true;
             }, function () {
                 LxNotificationService.error('Impossible de contacter le serveur');
             });
-        }
+        }*/
     };
-
 
 
 });
