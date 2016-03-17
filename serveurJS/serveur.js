@@ -85,29 +85,7 @@ connection.query("select idQuestion, proposition, estValide, nom from propositio
 
 });
 
-// page inscription 
-
-app.get('/inscription/formation', function(req, res) {
-	userId = req.headers.authorization; //recuperation de l'id
-	connection.query("select * from niveau_etude;", function(err, rows, fileds){
-	if(!err)
-		res.status(200).json(rows);
-	else
-		res.status(404).json("error");	
-  });	
-});
-
-app.get('/inscription/etablissement', function(req, res) {
-	userId = req.headers.authorization; //recuperation de l'id
-	connection.query("select * from etablissement;", function(err, rows, fileds){
-	if(!err)
-		res.status(200).json(rows);
-	else
-		res.status(404).json("error");	
-  });	
-});
-
-//fin page inscription
+//________________________________________VUE PROF_______________________________________________________________
 
 //recuperation des quizz du prof
 app.get('/listeQuizzProf',function(req,res){
@@ -294,6 +272,25 @@ app.post('/ajouterQuizz', function (req, resp) {
     niveauEtudeQuery();
 });
 
+//supp quizz
+app.delete('/suppQuizz/:id_Quizz', function(req, res) {
+		res.status(200).send();
+});
+
+app.param('id_Quizz', function(req, res, next, id){
+	
+	userId = req.headers.authorization; //recuperation de l'id
+	connection.query("delete * from quizz where Compte_idCompte= "+userId+" and idQuizz ="+id+";", function(err, rows, fileds){
+	if(!err){
+
+		next();
+	}else{
+		res.status(404).send("error delete quizz");
+	}
+  });
+ });
+
+//___________________________________________________________________________________________________________________
 
 //gestion des stats
 app.post('/resultats', function(req, res) {
@@ -341,6 +338,7 @@ app.get('/statsG',function(req, res){
 	 });
 });
 */
+//__________________________________________________Inscription__________________________________________________________
 
 app.post('/vuep/inscription', function(req,res){
     //changer type par 2...;
@@ -369,6 +367,25 @@ app.post('/inscription', function(req,res){
 });
 
 
+app.get('/inscription/formation', function(req, res) {
+	userId = req.headers.authorization; //recuperation de l'id
+	connection.query("select * from niveau_etude;", function(err, rows, fileds){
+	if(!err)
+		res.status(200).json(rows);
+	else
+		res.status(404).json("error");	
+  });	
+});
+
+app.get('/inscription/etablissement', function(req, res) {
+	userId = req.headers.authorization; //recuperation de l'id
+	connection.query("select * from etablissement;", function(err, rows, fileds){
+	if(!err)
+		res.status(200).json(rows);
+	else
+		res.status(404).json("error");	
+  });	
+});
 //
 app.listen(8080);
 
