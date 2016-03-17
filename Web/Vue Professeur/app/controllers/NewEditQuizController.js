@@ -20,7 +20,7 @@ angular.module('RevisatorProfApp')
         });
 
         // Affiche le nom et le prénom de l'utilisateur connecté dans la ToolBar
-        $scope.nom = 'Nom Prenom';
+        $scope.nom = "";
 
         // Liste des domaines
         $scope.domaine = "";

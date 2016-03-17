@@ -2,24 +2,27 @@
  * Created by Victor on 21/02/2016.
  */
 angular.module('RevisatorProfApp')
-    .controller('LoginController', function ($scope, $http, LxNotificationService) {
+    .controller('LoginController', function ($scope, $filter, $http, LxNotificationService) {
 
 
         // Fonction appelé lors du click sur le bouton de création de compte
         $scope.accountConfirmCreation = function (quiz) {
             if ($scope.hasAccountCreationButtonBeenClicked != true) {
-                $http.post('http://localhost:8080/inscProf', JSON.stringify($scope.inscProf)).then(function (response) {
+                $scope.inscProf.birthday = $filter('date')($scope.inscProf.birthday, "yyyy-MM-dd");
+                if($scope.hasAccountCreationButtonBeenClicked === false){
+                $http.post('http://localhost:8080/vuep/inscription', JSON.stringify($scope.inscProf)).then(function (response) {
                     LxNotificationService.success('Votre compte a bien été créé. Merci de vérifier vos mails et de cliquer sur le lien d activation');
                     $scope.hasAccountCreationButtonBeenClicked = true;
                 }, function () {
                     LxNotificationService.error('Impossible de contacter le serveur');
                 });
+                }
             }
         };
 
         // ng-click du bouton Connexion
         $scope.startConnect = function(){
-            $http.post('http://localhost:8080/connectProf', JSON.stringify($scope.connect)).then(function (response) {
+            $http.post('http://localhost:8080/signup', JSON.stringify($scope.connect)).then(function (response) {
                 // TODO : Rediriger vers la page de selection des quiz
             }, function () {
                 LxNotificationService.error('Impossible de contacter le serveur');
@@ -50,9 +53,10 @@ angular.module('RevisatorProfApp')
         // ng-models
         $scope.inscProf = {
             username: "",
+            nom: "",
+            prenom: "",
             password: "",
             mail: "",
-            schoo1: "",
             birthday: undefined,
             year: "",
             typeCompte: 2

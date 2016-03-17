@@ -26,7 +26,7 @@ app.config(function ($routeProvider) {
         return {
             'request': function (config) {
                 config.headers = config.headers || {};
-                config.headers.Authorization = sharedStorageService.get();
+                config.headers.Authorization = 9;
 
                 return config || $q.when(config);
             }

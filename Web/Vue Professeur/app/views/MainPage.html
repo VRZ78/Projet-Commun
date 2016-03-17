@@ -13,8 +13,6 @@
         <!--Toolbar Buttons-->
         <div class="toolbar__right">
 
-            <span class="fs-title mr+++">{{nom}}</span>
-
             <!--Plus Button-->
             <a href="#/newQuiz">
             <button class="btn btn--l btn--white btn--icon" lx-ripple lx-tooltip="Ajouter un quiz"
@@ -76,21 +74,16 @@
                     <ul class="list mt">
 
                         <!--Pour chaque quiz-->
-                        <div ng-repeat="quiz in quizes">
+                        <div ng-repeat="quiz in quizList track by $index">
 
                             <!--List items-->
                             <li class="list-row list-row--has-separator">
                                 <div class="list-row__content">
-                                    <span class="fs-body-1">{{quiz.name}}</span>
+                                    <span class="fs-body-1">{{quiz.nom}}</span>
                                 </div>
                                 <div class="list-row__secondary">
                                     <div flex-container="row">
-                                        <a href="#/newQuiz">
-                                        <button class="btn btn--m btn--black btn--icon" lx-ripple lx-tooltip="Modifier">
-                                            <i class="mdi mdi-pencil"></i>
-                                        </button>
-                                        </a>
-                                        <button class="btn btn--m btn--black btn--icon" ng-click="confirm(quiz); removeQuiz(quizes, $index)" lx-ripple lx-tooltip="Supprimer">
+                                        <button class="btn btn--m btn--black btn--icon" ng-click="confirm(quiz, $index)" lx-ripple lx-tooltip="Supprimer">
                                             <i class="mdi mdi-delete"></i>
                                         </button>
                                     </div>
