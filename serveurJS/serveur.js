@@ -308,9 +308,9 @@ app.post('/resultats', function(req, res) {
 
 
 //retourner les stats
-app.get('/statDetaillé',function(req, res){
+app.get('/statDetaille',function(req, res){
 	userId = req.headers.authorization;
-	connection.query("SELECT * FROM resultat, quizz, matiere where resultat.Compte_idCompte ="+userId+" and quizz.idQuizz = Quizz_idQuizz and matiere.idMatiere = Matiere_idMatiere;",function(err, rows, fields){
+	connection.query("SELECT resultat.Quizz_idQuizz, Matiere.nom, Quizz.nom, Matiere.idMatiere,nbQuestionBonne, nbQuestionTotal FROM resultat, quizz, matiere where resultat.Compte_idCompte ="+userId+" and quizz.idQuizz = Quizz_idQuizz and matiere.idMatiere = Matiere_idMatiere group by Matiere_idMatiere",function(err, rows, fields){
 		if(!err)
 			res.status(200).json(rows);
 		else
@@ -318,6 +318,16 @@ app.get('/statDetaillé',function(req, res){
 	});
 });
 
+//stats Générales
+app.get('/statsG',function(req, res){
+	userId = req.headers.authorization;
+	connection.query("select avg(nbQuestionBonne/nbQuestionTotal)*100 as moyenne from resultat, quizz where Quizz_idQuizz = idQuizz and resultat.Compte_idCompte ="+userId+" group by Matiere_idMatiere, Quizz_idQuizz",function(err, rows, fields){
+		if(!err)
+			res.status(200).json(rows);
+		else
+			res.status(404).json("error stats Générales");
+	});
+});
 
 
 /*app.post('/inscription', function(req,res){
@@ -357,6 +367,7 @@ app.post('/inscription', function(req,res){
         }
     });
 });
+
 
 //
 app.listen(8080);
