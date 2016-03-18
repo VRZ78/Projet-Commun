@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
 	database: 'revisator',
 });
 
-//connexion à la base de données
+//________________________________________________________connexion à la base de données
 connection.connect(function(err){
 if(!err) {
     console.log("connexion à la bdd reussi");    
@@ -21,7 +21,7 @@ if(!err) {
 }
 });
 
-//config cors
+//________________________________________________________config cors
 app.use(cors({
 	allowedOrigins : ['localhost'],
 	headers : ['Content-Type', 'Authorization']
@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-//recuperer choix de matiere (en fonction des formations)
+//_________________________________________________________recuperer choix de matiere (en fonction des formations)
 app.get('/listeMatieres', function(req, res) {
 	userId = req.headers.authorization; //recuperation de l'id
 	connection.query("select matiere.nom, matiere.idMatiere from quizz, matiere where Niveau_etude_idNiveau_etude = (select Niveau_etude_idNiveau_etude from compte where id="+userId+") and idMatiere =Matiere_idMatiere;", function(err, rows, fileds){
@@ -44,7 +44,7 @@ app.get('/listeMatieres', function(req, res) {
 
 
 
-//pour récuperer la liste des quiz correspondant à la matiere choisie
+//_________________________________________________________pour récuperer la liste des quiz correspondant à la matiere choisie
 app.get('/listeQuizz/:id_matiere', function(req, res) {
 		res.status(200).json(req.currents_quizz);
 });
@@ -64,7 +64,7 @@ app.param('id_matiere', function(req, res, next, id){
  });
 
 
-//recuperer les questions qui se rapportent au quizz choisi
+//______________________________________________________________recuperer les questions qui se rapportent au quizz choisi
 
 app.get('/quizz/:id_quizz', function(req,res){
 	res.status(200).json(req.current_quizz)
@@ -112,7 +112,6 @@ app.get('/listeMatiereProf',function(req,res){
 //ajouter un quizz dans la base de données
 app.post('/ajouterQuizz', function (req, resp) {
     var userId = req.headers.authorization;
-    console.log(userId);
     var nomQuizz = req.body.title;
     var nomMatiere = req.body.matiere.nom;
     var niveauEtude = req.body.year.niveau;
@@ -138,7 +137,7 @@ app.post('/ajouterQuizz', function (req, resp) {
                 idNiveauEtude = firstResult['idNiveau_etude'];
                 matiereQuery(function () {
                     console.log("Insertion du quiz");
-                    connection.query("INSERT INTO quizz(nom, Compte_idCompte, Matiere_idMatiere, Niveau_etude_idNiveau_etude)\n VALUES('" + nomQuizz + "',\n " + userId + ",\n " + idMatiere + ",\n " + idNiveauEtude + ");", function (error, rows) {
+                    connection.query("INSERT INTO quizz(nom, Compte_idCompte, Matiere_idMatiere, Niveau_etude_idNiveau_etude)\n VALUES(" + mysql.escape(nomQuizz) + ",\n " + userId + ",\n " + idMatiere + ",\n " + idNiveauEtude + ");", function (error, rows) {
                         if (error != null) {
                             console.log(error);
                         } else {
@@ -157,7 +156,7 @@ app.post('/ajouterQuizz', function (req, resp) {
 
     matiereQuery = function (callback) {
         console.log("Récupération de l'ID de la matière");
-        connection.query("SELECT * FROM matiere WHERE nom = '" + nomMatiere + "';", function select(err, rows, fields) {
+        connection.query("SELECT * FROM matiere WHERE nom = " + mysql.escape(nomMatiere) + ";", function select(err, rows, fields) {
             if (err) {
                 console.log(err);
                 connection.end();
@@ -188,7 +187,7 @@ app.post('/ajouterQuizz', function (req, resp) {
                 var firstResult = rows[0];
                 idQuizz = firstResult['idQuizz'];
                 console.log("Insertion de la question 1");
-                connection.query("INSERT INTO question(nom, Quizz_idQuizz) VALUES ('" + req.body.questions[1].questionTitle + "', " + idQuizz + ");", function (error, rows) {
+                connection.query("INSERT INTO question(nom, Quizz_idQuizz) VALUES (" + mysql.escape(req.body.questions[1].questionTitle) + ", " + idQuizz + ");", function (error, rows) {
                     if (error != null) {
 
                     } else {
@@ -221,7 +220,7 @@ app.post('/ajouterQuizz', function (req, resp) {
                         estValide = false;
                     }
                     console.log("Insertion des réponses de la question " + 1);
-                    connection.query("INSERT INTO proposition(proposition, estValide, Question_idQuestion) VALUES ('" + proposition + "', " + estValide + ", " + (idQuestion) + ");", function (error, rows) {
+                    connection.query("INSERT INTO proposition(proposition, estValide, Question_idQuestion) VALUES (" + mysql.escape(proposition) + ", " + estValide + ", " + (idQuestion) + ");", function (error, rows) {
                         if (error != null) {
                             console.log(error);
                         }
@@ -237,7 +236,7 @@ app.post('/ajouterQuizz', function (req, resp) {
 
             insertQuestions = function (callback) {
                 console.log("Insertion de la question " + NoQuestion);
-                connection.query("INSERT INTO question(nom, Quizz_idQuizz) VALUES ('" + nomQuestion + "', " + idQuizz + ");", function (error, rows) {
+                connection.query("INSERT INTO question(nom, Quizz_idQuizz) VALUES (" + mysql.escape(nomQuestion) + ", " + idQuizz + ");", function (error, rows) {
                     if (error != null) {
 
                     } else {
@@ -255,7 +254,7 @@ app.post('/ajouterQuizz', function (req, resp) {
                             estValide = false;
                         }
                         console.log("Insertion des réponses de la question " + NoQuestion);
-                        connection.query("INSERT INTO proposition(proposition, estValide, Question_idQuestion) VALUES ('" + proposition + "', " + estValide + ", " + (idQuestion + NoQuestion - 1) + ");", function (error, rows) {
+                        connection.query("INSERT INTO proposition(proposition, estValide, Question_idQuestion) VALUES (" + mysql.escape(proposition) + ", " + estValide + ", " + (idQuestion + NoQuestion - 1) + ");", function (error, rows) {
                             if (error != null) {
                                 console.log(error);
                             }
@@ -280,7 +279,7 @@ app.delete('/suppQuizz/:id_Quizz', function(req, res) {
 app.param('id_Quizz', function(req, res, next, id){
 	
 	userId = req.headers.authorization; //recuperation de l'id
-	connection.query("delete * from quizz where Compte_idCompte= "+userId+" and idQuizz ="+id+";", function(err, rows, fileds){
+	connection.query("delete from quizz where Compte_idCompte= "+userId+" and idQuizz ="+id+";", function(err, rows, fileds){
 	if(!err){
 
 		next();
@@ -290,7 +289,7 @@ app.param('id_Quizz', function(req, res, next, id){
   });
  });
 
-//___________________________________________________________________________________________________________________
+//_______________________________________________________STATISTIQUES____________________________________________________________
 
 //gestion des stats
 app.post('/resultats', function(req, res) {
@@ -307,7 +306,7 @@ app.post('/resultats', function(req, res) {
 //retourner les stats
 app.get('/statDetaille',function(req, res){
 	userId = req.headers.authorization;
-	connection.query("SELECT resultat.Quizz_idQuizz, Matiere.nom, Quizz.nom, Matiere.idMatiere,nbQuestionBonne, nbQuestionTotal FROM resultat, quizz, matiere where resultat.Compte_idCompte ="+userId+" and quizz.idQuizz = Quizz_idQuizz and matiere.idMatiere = Matiere_idMatiere group by Matiere_idMatiere",function(err, rows, fields){
+	connection.query("SELECT *, quizz.nom as quizz FROM resultat, quizz, matiere WHERE resultat.Quizz_idQuizz = idQuizz and Matiere_idMatiere = idMatiere and resultat.Compte_idCompte ="+userId+" order by idMatiere",function(err, rows, fields){
 		if(!err)
 			res.status(200).json(rows);
 		else
@@ -318,7 +317,7 @@ app.get('/statDetaille',function(req, res){
 //stats Générales
 app.get('/statsG',function(req, res){
 	userId = req.headers.authorization;
-	connection.query("select avg(nbQuestionBonne/nbQuestionTotal)*100 as moyenne from resultat, quizz where Quizz_idQuizz = idQuizz and resultat.Compte_idCompte ="+userId+" group by Matiere_idMatiere, Quizz_idQuizz",function(err, rows, fields){
+	connection.query("select avg(nbQuestionBonne/nbQuestionTotal)*100 as moyenne, matiere.nom from resultat, quizz, matiere where idMatiere = Matiere_idMatiere and Quizz_idQuizz = idQuizz and resultat.Compte_idCompte ="+userId+" group by Matiere_idMatiere;",function(err, rows, fields){
 		if(!err)
 			res.status(200).json(rows);
 		else
@@ -342,8 +341,7 @@ app.get('/statsG',function(req, res){
 
 app.post('/vuep/inscription', function(req,res){
     //changer type par 2...;
-    connection.query("INSERT INTO `compte`(`username`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`) VALUES ('"+req.body.username+"','"+req.body.nom+"','"+req.body.prenom+"','"+req.body.birthday+"','"+req.body.password+"',2,"+req.body.school.idEtablissement+","+req.body.year.idNiveau_etude+")",function(err, rows, fields){
-       //console.log("INSERT INTO `compte`(`username`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`) VALUES ("+req.body.username+","+req.body.nom+","+req.body.prenom+","+req.body.birthday+","+req.body.password+",2,"+req.body.school.idEtablissement+","+req.body.year.idNiveau_etude+"");
+    connection.query("INSERT INTO `compte`(`username`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`) VALUES ("+mysql.escape(req.body.username)+","+mysql.escape(req.body.nom)+","+mysql.escape(req.body.prenom)+",'"+req.body.birthday+"',"+mysql.escape(req.body.password)+",2,"+req.body.school.idEtablissement+","+req.body.year.idNiveau_etude+")",function(err, rows, fields){
         if(!err)
             res.status(200).send();
         else {
@@ -355,7 +353,7 @@ app.post('/vuep/inscription', function(req,res){
 
 app.post('/inscription', function(req,res){
 
-    connection.query("INSERT INTO `compte`(`username`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`) VALUES ('"+req.body.username+"','"+req.body.nom+"','"+req.body.prenom+"','"+req.body.birthday+"','"+req.body.password+"',1,"+req.body.school.idEtablissement+","+req.body.year.idNiveau_etude+")",function(err, rows, fields){
+    connection.query("INSERT INTO `compte`(`username`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`) VALUES ('"+mysql.escape(req.body.username)+"','"+mysql.escape(req.body.nom)+"','"+mysql.escape(req.body.prenom)+"','"+req.body.birthday+"','"+mysql.escape(req.body.password)+"',1,"+req.body.school.idEtablissement+","+req.body.year.idNiveau_etude+")",function(err, rows, fields){
        //console.log("INSERT INTO `compte`(`username`, `nom`, `prenom`, `date_naissance`, `password`, `Type_idType`, `Etablissement_idEtablissement`, `Niveau_etude_idNiveau_etude`) VALUES ("+req.body.username+","+req.body.nom+","+req.body.prenom+","+req.body.birthday+","+req.body.password+",1,"+req.body.school.idEtablissement+","+req.body.year.idNiveau_etude+"");
         if(!err)
             res.status(200).send();
@@ -386,43 +384,36 @@ app.get('/inscription/etablissement', function(req, res) {
 		res.status(404).json("error");	
   });	
 });
-//
-app.listen(8080);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-var server = http.createServer(function(req, res) {
-
-    res.writeHead(200, {"Content-Type": "text/html"});
-
-    res.end('<p>Test test coucou je suis la!</p>');
-
+//----------------------------------------------Connexion -------------------------------------
+app.post('/vuep/connexion', function(req, res) {
+    connection.query("select * from compte where username = " + mysql.escape(req.body.username) + " and password= " + mysql.escape(req.body.password) + " and Type_idType=2;", function(err, rows, fileds){
+        if(!err){
+            if(rows.length > 0) {
+                res.status(200).json(rows);
+            }
+            else{
+                res.status(404).json("error");
+            }
+        }
+        else
+            res.status(404).json("error");
+    });
 });
 
-server.listen(3000);*/
+app.post('/connexion', function(req, res) {
+    connection.query("select * from compte where username = " + mysql.escape(req.body.username) + " and password= " + mysql.escape(req.body.password) + " and Type_idType=1;", function(err, rows, fileds){
+        if(!err){
+            if(rows.length > 0) {
+                res.status(200).json(rows);
+            }
+            else{
+                res.status(404).json("error");
+            }
+        }
+        else
+            res.status(404).json("error");
+    });
+});
+
+app.listen(8080);
