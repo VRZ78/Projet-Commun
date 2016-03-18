@@ -46,7 +46,7 @@ statistiqueController.controller('statistiqueCtrl', function ($scope,$http) {
             var idMatierePourInjecter = $scope.statistique[i].idMatiere;
             for(var j=0;j<$scope.stat.length;j++){
                 if(idMatierePourInjecter == $scope.stat[j].idMatiere){
-                    $scope.stat[j].label.push($scope.statistique[i].nom);
+                    $scope.stat[j].label.push($scope.statistique[i].quizz);
                     $scope.stat[j].data[0].push(
                         ($scope.statistique[i].nbQuestionBonne * 20) / $scope.statistique[i].nbQuestionTotal); //On met la note sur 20
                     $scope.stat[j].series.push($scope.statistique[i].nom);

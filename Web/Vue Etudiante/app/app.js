@@ -16,7 +16,7 @@ var myApp = angular.module('myRevisator',
 
 
                     config.headers = config.headers || {};
-                    config.headers.Authorization = sharedStorageService.get();
+                    config.headers.Authorization = 3; // sharedStorageService.get();
 
                     return config || $q.when(config);
                 }
