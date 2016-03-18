@@ -2,7 +2,7 @@
  * Created by Victor on 21/02/2016.
  */
 angular.module('RevisatorProfApp')
-    .controller('LoginController', function ($scope, $filter, $http, LxNotificationService) {
+    .controller('LoginController', function ($scope, sharedStorageService, $location, $filter, $http, LxNotificationService) {
 
 
         // Fonction appelé lors du click sur le bouton de création de compte
@@ -11,7 +11,7 @@ angular.module('RevisatorProfApp')
                 $scope.inscProf.birthday = $filter('date')($scope.inscProf.birthday, "yyyy-MM-dd");
                 if($scope.hasAccountCreationButtonBeenClicked === false){
                 $http.post('http://localhost:8080/vuep/inscription', JSON.stringify($scope.inscProf)).then(function (response) {
-                    LxNotificationService.success('Votre compte a bien été créé. Merci de vérifier vos mails et de cliquer sur le lien d activation');
+                    LxNotificationService.success('Votre compte a bien été créé. Vous pouvez vous connecter');
                     $scope.hasAccountCreationButtonBeenClicked = true;
                 }, function () {
                     LxNotificationService.error('Impossible de contacter le serveur');
@@ -22,13 +22,15 @@ angular.module('RevisatorProfApp')
 
         // ng-click du bouton Connexion
         $scope.startConnect = function(){
-            $http.post('http://localhost:8080/signup', JSON.stringify($scope.connect)).then(function (response) {
-                // TODO : Rediriger vers la page de selection des quiz
+            $http.post('http://localhost:8080/vuep/connexion', JSON.stringify($scope.connect)).then(function (response) {
+                sharedStorageService.set(response.data[0].id);
+                $location.path("/welcome");
             }, function () {
                 LxNotificationService.error('Impossible de contacter le serveur');
             });
         };
 
+        // Récupértion de la liste des établissements
         $http.get('http://localhost:8080/inscription/etablissement').then(function (response) {
             $scope.etablissements = response.data;
             console.log($scope.reponse);
@@ -36,6 +38,7 @@ angular.module('RevisatorProfApp')
             console.log(reason);
         });
 
+        // Récupération de la liste des niveaux d'étude
         $http.get('http://localhost:8080/inscription/formation').then(function (response) {
             $scope.year = response.data;
             console.log($scope.reponse);
@@ -43,13 +46,15 @@ angular.module('RevisatorProfApp')
             console.log(reason);
         });
 
-
+        // ng-click du bouton mot de passe oublié
         $scope.forgotPass = function(){
             LxNotificationService.error('Cette fonction n\' est pas encore implémentée');
         };
 
         $scope.etablissements = "";
 
+        // Passe à true lorsque l'utilisateur clique sur Créer un compte
+        // Si il est a true aucune requête ne sera envoyé au serveur
         $scope.hasAccountCreationButtonBeenClicked = false;
 
         // Liste des choix pour le select du niveau d'étude
@@ -66,6 +71,7 @@ angular.module('RevisatorProfApp')
             year: "",
             typeCompte: 2
         };
+
 
         $scope.connect = {
             username: "",
@@ -118,6 +124,7 @@ angular.module('RevisatorProfApp')
         };
 
         // Vérification mots de passe et adresses mails identiques
+        // Bug sur Chrome ne marche qu'au premier passage de la souris
         $scope.onMouseoverCreationButton = function () {
             var isSomethingWrong = false;
             if ($scope.inscProf.password != $scope.inscProf.confirmPassword && $scope.inscProf.password != "" && $scope.inscProf.confirmPassword != "") {

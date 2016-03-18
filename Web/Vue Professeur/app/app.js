@@ -26,7 +26,7 @@ app.config(function ($routeProvider) {
         return {
             'request': function (config) {
                 config.headers = config.headers || {};
-                config.headers.Authorization = 9;
+                config.headers.Authorization = sharedStorageService.get();
 
                 return config || $q.when(config);
             }
@@ -46,5 +46,15 @@ app.config(function ($routeProvider) {
     return {
         set: set,
         get: get
+    }
+});
+
+// Redirige en cas de perte du userID
+app.run(function ($location, sharedStorageService) {
+
+    if ($location.path() != '/') {
+        if (isNaN(sharedStorageService.get())) {
+            $location.path("/");
+        }
     }
 });

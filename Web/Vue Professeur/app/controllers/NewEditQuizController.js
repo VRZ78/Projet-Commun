@@ -3,18 +3,19 @@
  */
 
 angular.module('RevisatorProfApp')
-    .controller('NewEditQuizController', function ($scope, $http, $location, LxNotificationService) {
+    .controller('NewEditQuizController', function ($scope, $http, sharedStorageService, $location, LxNotificationService) {
 
+
+        // Récupération de la liste des matières
         $http.get('http://localhost:8080/listeMatiereProf').then(function (response) {
             $scope.matiere = response.data;
-            console.log($scope.reponse);
         }, function (reason) {
             console.log(reason);
         });
 
+        // Récupération de la liste des niveaux d'étude
         $http.get('http://localhost:8080/inscription/formation').then(function (response) {
             $scope.domaine = response.data;
-            console.log($scope.reponse);
         }, function (reason) {
             console.log(reason);
         });
@@ -99,7 +100,6 @@ angular.module('RevisatorProfApp')
                 $http.post('http://localhost:8080/ajouterQuizz', JSON.stringify($scope.quiz)).then(function (response) {
                     LxNotificationService.success('Votre quiz a bien été créé');
                     $location.path("/welcome");
-
                 }, function () {
                     LxNotificationService.error('Impossible de contacter le serveur');
                 });
