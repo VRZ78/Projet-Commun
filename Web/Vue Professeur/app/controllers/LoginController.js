@@ -26,7 +26,7 @@ angular.module('RevisatorProfApp')
                 sharedStorageService.set(response.data[0].id);
                 $location.path("/welcome");
             }, function () {
-                LxNotificationService.error('Impossible de contacter le serveur');
+                LxNotificationService.error('Ce compte n\'existe pas');
             });
         };
 
