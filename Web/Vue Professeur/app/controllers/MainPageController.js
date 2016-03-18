@@ -21,13 +21,18 @@ angular.module('RevisatorProfApp')
 
         $scope.nom = "";
 
-        $scope.confirm = function (quiz) {
-            $http.post('http://localhost:8080/signup', JSON.stringify(quiz)).then(function (response) {
-                array.splice(index, 1);
-                LxNotificationService.success(quiz.name + ' a bien été supprimé');
+        $scope.confirm = function (quiz, $index) {
+            $http.delete('http://localhost:8080/suppQuizz/'+ quiz.idQuizz +'', JSON.stringify(quiz)).then(function (response) {
+                LxNotificationService.success(quiz.nom + ' a bien été supprimé');
+                $scope.removeQuiz($scope.quizList, $index);
             }, function () {
                 LxNotificationService.error('Impossible de contacter le serveur');
             });
         };
+
+
+        $scope.removeQuiz = function(array, index){
+            array.splice(index, 1);
+        }
 
     });
