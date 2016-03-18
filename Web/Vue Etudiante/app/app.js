@@ -16,7 +16,7 @@ var myApp = angular.module('myRevisator',
 
 
                     config.headers = config.headers || {};
-                    config.headers.Authorization = 3; // sharedStorageService.get();
+                    config.headers.Authorization = sharedStorageService.get();
 
                     return config || $q.when(config);
                 }
@@ -55,4 +55,10 @@ var myApp = angular.module('myRevisator',
 });
 
 
-
+myApp.run(function ($location, sharedStorageService) {
+    if ($location.path() != '/login') {
+        if (isNaN(sharedStorageService.get())) {
+            $location.path("/login");
+        }
+    }
+});

@@ -21,18 +21,18 @@
 
 
         <lx-text-field label="Login" fixed-label="true" icon="account">
-            <input type="text" ng-model="username">
+            <input type="text" ng-model="connect.username">
         </lx-text-field>
 
         <lx-text-field label="Mot de passe" fixed-label="true" icon="key">
-            <input type="password" ng-model="password">
+            <input type="password" ng-model="connect.password">
         </lx-text-field>
 
 
+
         <div class="m+">
-            <a ng-href="#tableauDeBord">
-                <button class="btn btn--m btn--orange btn--raised" lx-ripple>Se connecter</button>
-            </a>
+                <button class="btn btn--m btn--orange btn--raised" ng-click="connexion()" lx-ripple>Se connecter</button>
+
             <!--
 
                         <a ng-click="submit()" class="card__actions">
