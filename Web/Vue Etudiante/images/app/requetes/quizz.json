@@ -1,0 +1,9 @@
+{
+  "questions": [{
+    "intituleQuestion": "Question1",
+    "reponses": ["Reponse1", "Reponse2"]
+  }, {
+    "intituleQuestion": "Question2",
+    "reponses": ["Reponse1", "Reponse2"]
+  }]
+}

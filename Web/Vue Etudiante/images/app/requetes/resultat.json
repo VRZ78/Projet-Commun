@@ -1,0 +1,75 @@
+{
+  "resultat": [{
+    "intituleQuestion": "Les planetes sont ronde?",
+    "estJuste": false,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question 1, blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": true,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": false,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": true,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": false,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": true,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": true,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": true,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": true,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": true,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": true,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": true,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": true,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }, {
+    "intituleQuestion": "Le feu est chaud?",
+    "estJuste": false,
+    "BonneReponse": "ReponseX",
+    "commentaire": "Commentaire sur la question blabla bla bla"
+  }
+
+  ]
+}
