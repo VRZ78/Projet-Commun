@@ -1,12 +1,13 @@
 package vrz.com.revisator.objects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Victor on 27/01/2016.
  * Objet Question. Doit être utilisé dans un objet Quizz
  */
-public class Question {
+public class Question implements Serializable {
 
     private String ennonceQuestion;
     private ArrayList<String> reponses;
@@ -52,7 +53,7 @@ public class Question {
             throw new IndexOutOfBoundsException();
         }
         else
-            return this.reponses.get(numeroReponse-1);
+            return this.reponses.get(numeroReponse);
     }
 
     /**
@@ -116,6 +117,14 @@ public class Question {
      */
     public int getNbBonnesReponses(){
         return this.bonnesReponses.size();
+    }
+
+    /**
+     * Retourne l'ennoncé de la question
+     * @return L'ennoncé de la question
+     */
+    public String getEnnonceQuestion(){
+        return this.ennonceQuestion;
     }
 
 }

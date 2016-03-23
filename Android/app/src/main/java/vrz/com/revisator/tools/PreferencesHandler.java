@@ -30,14 +30,16 @@ public class PreferencesHandler {
      * Sauvegarde les logs de l'utilisateur
      * @param username Le nom d'utilisateur
      * @param password Le mot de passe
+     * @param userID L'ID de l'utilisateur, renvoyé par le serveur lors de la connexion
      * @param context getApplicationContext()
      */
-    public static void saveCredential(String username, String password, Context context){
+    public static void saveCredential(String username, String password, String userID, Context context){
         SharedPreferences shareP = context.getSharedPreferences(context.getString(R.string.pref_userinfo), Context.MODE_PRIVATE);
         SharedPreferences.Editor sharePrefEditor = shareP.edit();
         sharePrefEditor.putBoolean("hasLogInfo", true);
         sharePrefEditor.putString("username", username);
         sharePrefEditor.putString("password", password);
+        sharePrefEditor.putString("ID", userID);
         sharePrefEditor.commit();
     }
 

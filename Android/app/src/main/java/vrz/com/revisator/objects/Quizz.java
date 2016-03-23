@@ -1,12 +1,13 @@
 package vrz.com.revisator.objects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Victor on 27/01/2016.
  * Objet Quizz
  */
-public class Quizz {
+public class Quizz implements Serializable {
 
     private ArrayList<Question> questionList;
     private int id;

@@ -1,5 +1,8 @@
 package vrz.com.revisator.objects;
 
+import android.provider.Settings;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +11,7 @@ import java.util.List;
  * Contient les réponses que l'utilisateur a donnée à un quizz
  * Created by Victor on 27/01/2016.
  */
-public class Resultat {
+public class Resultat implements Serializable {
 
     private int quizzID;
     private HashMap<Integer, ArrayList<Integer>> reponsesDeLutilisateur;
@@ -99,7 +102,7 @@ public class Resultat {
         if(quizz.getId() == this.quizzID){
             // Si c'est le cas on calcule le score
             // Pour chaque question :
-            for(int i = 1; i <= quizz.getNombreQuestion(); i++){
+            for(int i = 0; i < quizz.getNombreQuestion(); i++){
                 // On commence par regarde le nb de bonnes réponse qu'elle accnnbRepte
                 nbBonnesRep = quizz.getQuestion(i).getNbBonnesReponses();
                 // Si la question n'a que une réponse :
@@ -119,7 +122,7 @@ public class Resultat {
                         int nbReponsesCorrectes = 0;
                         // Puis pour chaque reponse donnée on vérifie si elle est juste
                         for(int j = 0; j < reponsesDeLutilisateur.size();j++){
-                            if(quizz.getQuestion(i).isBonneReponse(reponsesDeLutilisateur.get(i))){
+                            if(quizz.getQuestion(i).isBonneReponse(reponsesDeLutilisateur.get(j))){
                                 // Si elle est juste on incrémente le nb de bonnes réponse de l'util.
                                 nbReponsesCorrectes++;
                             }

@@ -14,4 +14,12 @@
     <string name="logout">Se déconnecter</string>
     <string name="pref_userinfo">pref_userinfo</string>
     <string name="no_imput_toast">Merci d\'entrer un nom d\'utilisatur et un mot de passe</string>
+    <string name="title_activity_selection">Sélectionnez un quiz</string>
+    <string name="title_activity_selection_quiz">Sélectionnez un quiz</string>
+    <string name="title_activity_selection_course">Sélectionnez une matière</string>
+    <string name="title_activity_quiz">Quiz en cours</string>
+    <string name="valid_button">Valider</string>
+    <string name="title_activity_result">Résultat</string>
+    <string name="score_text">Votre score est de :</string>
+    <string name="no_check_text">Merci d\'entrer au moins une bonne réponse</string>
 </resources>
