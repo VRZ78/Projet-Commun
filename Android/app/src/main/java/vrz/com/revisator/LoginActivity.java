@@ -1,10 +1,13 @@
 package vrz.com.revisator;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,13 +67,6 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    // Cache le bouton Settings
-   @Override
-   public boolean onPrepareOptionsMenu(Menu menu) {
-       MenuItem item= menu.findItem(R.id.action_settings);
-       item.setVisible(false);
-       return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -82,6 +78,23 @@ public class LoginActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        else if(id == R.id.settingsButton){
+            // Alert Dialog pour l'adresse du serveur
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Entrez l'IP et le port du serveur. Ex : 192.168.1.72:8080");
+
+            final EditText input = new EditText(this);
+            builder.setView(input);
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    PreferencesHandler.saveServerIP("http://" + input.getText().toString().trim() + "/", getApplicationContext());
+                }
+            });
+
+            builder.show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -106,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
             final String password = shareP.getString("password", null);
 
             try {
+                WebApiHandler.SERVER_ADRESS = PreferencesHandler.getServerIP(getApplicationContext());
                 WebApiHandler.connection(username, password, getApplicationContext(), new VolleyCallback() {
                     @Override
                     public void onSuccess(HashMap<String, String> result) {
@@ -152,6 +166,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             // Sinon, passe les infos au serveur et on se connecte
             else {
+                WebApiHandler.SERVER_ADRESS = PreferencesHandler.getServerIP(getApplicationContext());
                 try {
                     WebApiHandler.connection(username, password, getApplicationContext(), new VolleyCallback() {
                         @Override

@@ -43,6 +43,13 @@ public class PreferencesHandler {
         sharePrefEditor.commit();
     }
 
+    public static void saveServerIP(String ip, Context context){
+        SharedPreferences shareP = context.getSharedPreferences(context.getString(R.string.pref_userinfo), Context.MODE_PRIVATE);
+        SharedPreferences.Editor sharePrefEditor = shareP.edit();
+        sharePrefEditor.putString("ip", ip);
+        sharePrefEditor.commit();
+    }
+
     /**
      * Supprime les login de la mémoire
      * @param context getApplicationContext()
@@ -60,12 +67,23 @@ public class PreferencesHandler {
     /**
      * Retourne le nom d'utilisateur stocké dans l'application
      * @param context getApplicationContext()
-     * @return
+     * @return Le nom d'utilisateur stocké
      */
     public static String getUsername(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.pref_userinfo), Context.MODE_PRIVATE);
         String username = sharedPref.getString("username", "");
         return username;
+    }
+
+    /**
+     * Retourne l'IP du serveur
+     * @param context getApplicationContext()
+     * @return l'IP du serveur
+     */
+    public static String getServerIP(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.pref_userinfo), Context.MODE_PRIVATE);
+        String ip = sharedPref.getString("ip", "");
+        return ip;
     }
 
 

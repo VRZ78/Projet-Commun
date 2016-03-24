@@ -26,7 +26,7 @@ import vrz.com.revisator.objects.Quizz;
  */
 public class WebApiHandler {
 
-    public static final String SERVER_ADRESS = "http://192.168.1.72:8080/";
+    public static String SERVER_ADRESS = "http://192.168.1.72:8080/";
 
     /**
      * Retourne la liste des établissements

@@ -138,6 +138,7 @@ public class SelectionActivity extends AppCompatActivity {
                     // On passe l'ID du quiz à QuizActivity
                     intent.putExtra("quizId", idMatch.get(subjectsOrQuizzes.getItemAtPosition(position).toString()));
                     startActivity(intent);
+                    finish();
                 }
             });
         }

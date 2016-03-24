@@ -22,4 +22,8 @@
     <string name="title_activity_result">Résultat</string>
     <string name="score_text">Votre score est de :</string>
     <string name="no_check_text">Merci d\'entrer au moins une bonne réponse</string>
+    <string name="question_number">Question</string>
+    <string name="yourAnswer">Vous avez répondu :</string>
+    <string name="correctAnswer">Réponse(s) acceptée(s)</string>
+    <string name="setting_icon_text">Spécifier l\'adresse du serveur</string>
 </resources>
