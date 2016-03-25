@@ -112,6 +112,7 @@ public class QuizActivity extends AppCompatActivity {
         // Récupération de la question
         final Question question = quizEnCours.getQuestion(quNumber);
         // Set up de l'affichage
+        setTitle("Question " + String.valueOf((quNumber + 1)) + " / " + String.valueOf(quizEnCours.getNombreQuestion()));
         questionText.setText(question.getEnnonceQuestion());
         for (int i = 0; i < 6; i++) {
             if (i < question.getNbReponses()) {
